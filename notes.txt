@@ -6,6 +6,10 @@
 5. tap on image and add description
 6. write a story and recognize keywords
 
+hsl(143, 81%, 39%)
+hsl(162, 70%, 22%)
+
+
 {
 	"company":"Huntsman",
 	"name":"",
@@ -19,10 +23,10 @@
 			"answers":[
 				{
 					"text":"",
-					"id":""
+					"id":"",
 					"correct":"true/false",
 					"coordinates":{
-						"x":""
+						"x":"",
 						"y":""
 					},
 					"order":"",

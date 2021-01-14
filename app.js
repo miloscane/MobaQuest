@@ -97,7 +97,8 @@ mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
 
 server.get('/',function(req,res){
 	res.render('home',{
-		pageInfo: fetchPageInfo('Huntsman')
+		pageInfo: fetchPageInfo('Huntsman'),
+		quest: JSON.parse(fs.readFileSync('./quest.json','utf-8')) 
 	});
 });
 
@@ -112,6 +113,15 @@ server.get('/:pageName',function(req,res){
 		}
 	});
 });
+
+
+server.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /");
+});
+
+
+
 
 server.get('*',function(req,res){
 	res.redirect('/');
