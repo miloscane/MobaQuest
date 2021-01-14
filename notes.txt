@@ -1,0 +1,36 @@
+//Question types
+1. true/false pick
+2. true/false tap on image
+3. reorder actions
+4. connect the dots
+5. tap on image and add description
+6. write a story and recognize keywords
+
+{
+	"company":"Huntsman",
+	"name":"",
+	"id":"",
+	"questions":[
+		{
+			"text":"",
+			"type":"",
+			"scoreImpact":"",
+			"image":"",
+			"answers":[
+				{
+					"text":"",
+					"id":""
+					"correct":"true/false",
+					"coordinates":{
+						"x":""
+						"y":""
+					},
+					"order":"",
+					"partnerId":"",
+					"image":""
+				}
+			]
+		},
+		{}
+	],
+}
