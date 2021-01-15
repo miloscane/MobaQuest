@@ -8,6 +8,20 @@
 			"type":1,
 			"scoreImpact":10,
 			"image":"",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"High",
@@ -67,6 +81,20 @@
 			"type":1,
 			"scoreImpact":10,
 			"image":"",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"Centrifugal",
@@ -143,6 +171,20 @@
 			"type":2,
 			"scoreImpact":10,
 			"image":"/uploads/Huntsman/Valves.png",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"",
@@ -168,6 +210,20 @@
 			"type":2,
 			"scoreImpact":10,
 			"image":"/uploads/Huntsman/Valve-icons.png",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"",
@@ -244,6 +300,20 @@
 			"type":3,
 			"scoreImpact":10,
 			"image":"",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"Relieve air",
@@ -337,6 +407,20 @@
 			"type":4,
 			"scoreImpact":10,
 			"image":"",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
 			"answers":[
 				{
 					"text":"",
@@ -475,6 +559,48 @@
 					"image":""
 				}
 			]
+		},
+		{
+			"text":"Add descriptions to points on the IP21 about what happened at that moment",
+			"type":5,
+			"scoreImpact":10,
+			"image":"/uploads/Huntsman/IP21.png",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":[""],
+			"answers":[]
+		},
+		{
+			"text":"Write a story",
+			"type":6,
+			"scoreImpact":10,
+			"image":"",
+			"activePoints":[
+				{
+					"coordinates":{
+						"x":"",
+						"y":""
+					},
+					"size":{
+						"width":"",
+						"height":""
+					},
+					"text":""
+				}
+			],
+			"keywords":["Keyword 1","Keyword 2","Keyword3"],
+			"answers":[]
 		}
 	]
 }
