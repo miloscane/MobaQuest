@@ -53,6 +53,10 @@ questWrap.setAttribute("class","questWrap");
 		questionsWrap.appendChild(questionWrap);
 	}
 
+	var questResult	=	document.createElement("DIV");
+	questResult.setAttribute("id","result");
+	questionsWrap.appendChild(questResult);
+
 	questWrap.appendChild(questionsWrap);
 
 	var questControls	=	document.createElement("DIV");
@@ -70,7 +74,7 @@ questWrap.setAttribute("class","questWrap");
 		questControls.appendChild(number);
 
 		var nextButton	=	document.createElement("DIV");
-		nextButton.setAttribute("id","prev-button");
+		nextButton.setAttribute("id","next-button");
 		nextButton.setAttribute("class","button");
 		nextButton.setAttribute("onclick","navigate(1)");
 		nextButton.innerHTML="Next";
@@ -79,6 +83,81 @@ questWrap.setAttribute("class","questWrap");
 
 elemToAdd.appendChild(questWrap);
 
-document.getElementsByClassName("questionWrap")[0].classList.add("questionActive");
-document.getElementById("number").innerHTML="1/"+quest.questions.length;
-document.getElementById("prev-button").classList.add("buttonInactive");
+function navigate(num){
+	var questionToOpen	=	0;
+	document.getElementsByClassName("questWrap")[0].scrollTop = 0;
+	var questions	=	document.getElementsByClassName("questionWrap");
+	var totalQuestions	=	quest.questions.length;
+	for(var i=0;i<questions.length;i++){
+		if(questions[i].classList.contains("questionActive")){
+			questionToOpen=i+num;
+		}
+	}
+	
+	if(questionToOpen<=0){
+		//First question will open
+		for(var i=0;i<questions.length;i++){
+			questions[i].classList.remove("questionActive");
+			questions[i].classList.remove("questionHiddenLeft");
+			questions[i].classList.add("questionHiddenRight");
+		}
+		questions[0].classList.add("questionActive");
+		questions[0].classList.remove("questionHiddenRight");
+		document.getElementById("prev-button").classList.add("buttonInactive");
+		document.getElementById("next-button").classList.remove("buttonInactive");
+		document.getElementById("next-button").innerHTML="Next";
+		document.getElementById("prev-button").innerHTML="Previous";
+		document.getElementById("result").style.display="none";
+		document.getElementById("number").innerHTML="1/"+totalQuestions;
+	}else if(questionToOpen==eval(questions.length-1)){
+		//Last question is going to open now
+		for(var i=0;i<questions.length;i++){
+			questions[i].classList.remove("questionActive");
+			questions[i].classList.remove("questionHiddenRight");
+			questions[i].classList.add("questionHiddenLeft");
+		}
+		questions[questionToOpen].classList.add("questionActive");
+		questions[questionToOpen].classList.remove("questionHiddenLeft");
+		if(document.getElementsByClassName("questWrap")[0].classList.contains("finished")){
+			document.getElementById("next-button").innerHTML="Results";
+		}else{
+			document.getElementById("next-button").innerHTML="Finish Quest";
+		}
+		document.getElementById("result").style.display="none";
+		document.getElementById("number").innerHTML=eval(questionToOpen+1)+"/"+totalQuestions;
+	}else if(questionToOpen>=questions.length){
+		//Quest has ended
+		for(var i=0;i<questions.length;i++){
+			questions[i].classList.remove("questionActive");
+			questions[i].classList.remove("questionHiddenRight");
+			questions[i].classList.add("questionHiddenLeft");
+		}
+		document.getElementById("next-button").innerHTML="Quest ended";
+		document.getElementById("next-button").classList.add("buttonInactive");
+		document.getElementById("prev-button").classList.remove("buttonInactive");
+		document.getElementById("prev-button").innerHTML="Review Answers";
+		document.getElementById("result").style.display="block";
+		document.getElementById("number").innerHTML="";
+		finishQuest();
+	}else{
+		for(var i=0;i<questions.length;i++){
+			questions[i].classList.remove("questionActive");
+			if(i<questionToOpen){
+				questions[i].classList.remove("questionHiddenRight");
+				questions[i].classList.add("questionHiddenLeft");
+			}else{
+				questions[i].classList.remove("questionHiddenLeft");
+				questions[i].classList.add("questionHiddenRight");
+			}
+		}
+		questions[questionToOpen].classList.add("questionActive");
+		document.getElementById("prev-button").classList.remove("buttonInactive");
+		document.getElementById("next-button").classList.remove("buttonInactive");
+		document.getElementById("next-button").innerHTML="Next";
+		document.getElementById("prev-button").innerHTML="Previous";
+		document.getElementById("result").style.display="none";
+		document.getElementById("number").innerHTML=eval(questionToOpen+1)+"/"+totalQuestions;
+	}
+}
+
+navigate(1);

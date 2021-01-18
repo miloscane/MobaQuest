@@ -276,7 +276,6 @@ progress{
 .questionWrap{
     position:absolute;
     width:100%;
-    left:110%;
     right:0%;
     top:0;
     -webkit-transition:all ease 0.5s;
@@ -284,6 +283,14 @@ progress{
     -ms-transition:all ease 0.5s;
     -o-transition:all ease 0.5s;
     transition:all ease 0.5s;
+    background-color:rgb(255,255,255);
+}
+
+.questionHiddenLeft{
+    left:-110%;
+}
+.questionHiddenRight{
+    left:110%;
 }
 
 .questionActive{
@@ -292,7 +299,6 @@ progress{
 }
 
 .button{
-    
     padding: 6px;
     border-radius: 2px;
     cursor: pointer;
@@ -304,6 +310,11 @@ progress{
     -ms-transition:all ease 0.5s;
     -o-transition:all ease 0.5s;
     transition:all ease 0.5s;    
+}
+
+.button:active{
+    background-color: rgb(37,78,118);
+    border: 3px inset rgba(37,78,118,0.5);
 }
 
 .buttonInactive{
