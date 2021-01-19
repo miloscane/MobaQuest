@@ -16,13 +16,14 @@ questWrap.setAttribute("class","questWrap");
 		var questionWrap	=	document.createElement("DIV");
 		var question	=	JSON.parse(JSON.stringify(quest.questions[i]));
 		questionWrap.setAttribute("class","questionWrap");
+		questionWrap.classList.add("questionType"+Number(question.type))
 		questionWrap.setAttribute("data-type",Number(question.type));
 		questionWrap.setAttribute("data-scoreImpact",Number(question.scoreImpact))
 
-			var questionTitle	=	document.createElement("DIV");
-			questionTitle.setAttribute("class","questionTitle");
-			questionTitle.innerHTML	=	question.text;
-			questionWrap.appendChild(questionTitle);
+			var questionText	=	document.createElement("DIV");
+			questionText.setAttribute("class","questionText");
+			questionText.innerHTML	=	question.text;
+			questionWrap.appendChild(questionText);
 
 			var answersWrap	=	document.createElement("DIV");
 			answersWrap.setAttribute("class","answersWrap");
@@ -33,7 +34,8 @@ questWrap.setAttribute("class","questWrap");
 					for(var j=0;j<question.answers.length;j++){
 						var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
 						var answerElem	=	document.createElement("DIV");
-						answerElem.setAttribute("class","answer textAnswer");
+						answerElem.setAttribute("class","answer button");
+						answerElem.setAttribute("onclick","pickAnswer(this)");
 						if(answer.correct){
 							answerElem.classList.add("correct");
 						}
@@ -45,6 +47,51 @@ questWrap.setAttribute("class","questWrap");
 						answersWrap.appendChild(answerElem);
 
 					}
+					break;
+
+				case 2:
+					//Tap on image
+
+					var imageWrap	=	document.createElement("DIV");
+					imageWrap.setAttribute("class","imageWrap");
+
+						var image	=	document.createElement("IMG");
+						image.setAttribute("src",question.image);
+						imageWrap.appendChild(image);
+
+						for(var j=0;j<question.answers.length;j++){
+							var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+							var imageAnswer	=	document.createElement("DIV");
+							imageAnswer.setAttribute("class","answer correct");
+							imageAnswer.style.top=answer.coordinates.y+"%";
+							imageAnswer.style.left=answer.coordinates.x+"%";
+							imageAnswer.style.width=answer.size.width+"%";
+							imageAnswer.style.height=answer.size.height+"%";
+							imageWrap.appendChild(imageAnswer);
+						}
+
+					var imageOverlay	=	document.createElement("DIV");
+					imageOverlay.setAttribute("class","imageOverlay");
+					imageOverlay.setAttribute("onclick","pickAnswerOnImage(event,this)");
+					imageWrap.appendChild(imageOverlay);
+
+					answersWrap.appendChild(imageWrap);
+
+					break;
+
+				case 3:
+					//Reorder
+					var answerList	=	document.createElement("UL");
+					answerList.setAttribute("class","sortable");
+					answerList.setAttribute("id","sortable"+i);
+					for(var j=0;j<question.answers.length;j++){
+						var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+						var answerElem	=	document.createElement("LI");
+						answerElem.setAttribute("class","answer");
+						answerElem.innerHTML	=	eval(j+1)+". "+answer.text;
+						answerList.appendChild(answerElem);
+					}
+					answersWrap.appendChild(answerList);
 					break;
 			}
 
@@ -137,8 +184,9 @@ function navigate(num){
 		document.getElementById("prev-button").classList.remove("buttonInactive");
 		document.getElementById("prev-button").innerHTML="Review Answers";
 		document.getElementById("result").style.display="block";
+		document.getElementsByClassName("questionsWrap")[0].classList.add("finished")
 		document.getElementById("number").innerHTML="";
-		finishQuest();
+		//finishQuest();
 	}else{
 		for(var i=0;i<questions.length;i++){
 			questions[i].classList.remove("questionActive");
@@ -161,3 +209,59 @@ function navigate(num){
 }
 
 navigate(1);
+
+function pickAnswer(elem){
+	console.log(elem.parentElement.parentElement);
+	var question	=	elem.parentElement.parentElement;
+	var type	=	Number(question.dataset.type);
+	switch (type){
+		case 1:
+			if(elem.classList.contains("answerSelected")){
+				elem.classList.remove("answerSelected")
+			}else{
+				elem.classList.add("answerSelected")
+			}
+			break;
+	}
+}
+
+function pickAnswerOnImage(event,elem){
+		var answerExists	=	false;
+		var currentAnswers	=	elem.parentElement.getElementsByClassName("imageAnswer");
+		for(var i=0;i<currentAnswers.length;i++){
+			var currentAnswer	=	currentAnswers[i];
+			var elemRect	=	currentAnswer.getBoundingClientRect();
+			var boundingBox	=	elem;
+			var top			=	elemRect.top-boundingBox.getBoundingClientRect().top;//Because main image is not at the top of viewport
+			var bottom		=	top	+ elemRect.height;
+			
+			var left	=	elemRect.left-boundingBox.getBoundingClientRect().left;
+			var right	=	left	+ elemRect.width;
+
+			if(event.offsetY<bottom && event.offsetY>top && event.offsetX>left && event.offsetX<right){
+				answerExists	=	true;
+				var answerIndex	=	i;
+				break;
+			}
+		}
+
+		if(!answerExists){
+			var answer	=	document.createElement("DIV");
+			answer.setAttribute("class","imageAnswer");
+			answer.style.top=eval(event.offsetY-13)+"px";
+			answer.style.left=eval(event.offsetX-13)+"px";
+			answer.dataset.coordinates=event.offsetX+","+event.offsetY;
+			elem.parentElement.appendChild(answer);
+		}else{
+			elem.parentElement.removeChild(currentAnswers[answerIndex]);
+		}
+}
+
+
+//Initilazie sortable lists
+for(var i=0;i<document.getElementsByClassName("sortable").length;i++){
+	new Sortable(document.getElementsByClassName("sortable")[i], {
+		animation: 150,
+		ghostClass: 'invisible'
+	});
+}
