@@ -430,10 +430,14 @@ progress{
     padding:4px;
     margin:4px auto;
     background-color:rgb(255,255,255);
+    -webkit-cursor:grab;
+    cursor:grab;
 }
 
-.questionType3 .answer:hover{
-    border:1px dashed rgb(20,42,64);
+.questionType3 .sortable-chosen{
+    border:1px dashed rgb(20,42,64) !important;
+    -webkit-cursor:grabbing !important;
+    cursor:grabbing !important;
 }
 
 

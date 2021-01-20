@@ -88,6 +88,7 @@ questWrap.setAttribute("class","questWrap");
 						var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
 						var answerElem	=	document.createElement("LI");
 						answerElem.setAttribute("class","answer");
+						answerElem.setAttribute("data-order",Number(answer.order));
 						answerElem.innerHTML	=	eval(j+1)+". "+answer.text;
 						answerList.appendChild(answerElem);
 					}
