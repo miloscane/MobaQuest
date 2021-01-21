@@ -568,14 +568,25 @@
 			"activePoints":[
 				{
 					"coordinates":{
-						"x":"",
-						"y":""
+						"x":5,
+						"y":10
 					},
 					"size":{
-						"width":"",
-						"height":""
+						"width":25,
+						"height":25
 					},
-					"text":""
+					"text":"1."
+				},
+				{
+					"coordinates":{
+						"x":55,
+						"y":70
+					},
+					"size":{
+						"width":30,
+						"height":30
+					},
+					"text":"2."
 				}
 			],
 			"keywords":[""],

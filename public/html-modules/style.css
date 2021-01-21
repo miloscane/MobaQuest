@@ -213,6 +213,15 @@ progress{
     margin-right:auto;
 }
 
+.noselect{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .questWrap {
     width: 540px;
     padding: 10px 20px;
@@ -440,7 +449,123 @@ progress{
     cursor:grabbing !important;
 }
 
+.questionType4 .answer{
+    border: 2px solid rgb(255,255,255);
+    transition: all ease 0.5s;
+}
 
+.questionType4 .answer{
+    background-color: rgb(0,50,99);
+    border: 2px solid rgb(255,255,255);
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 2px;
+    color: rgb(255,255,255);
+    margin-bottom: 25px;
+    font-size: 12px;
+    text-align:center;
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -ms-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+
+.questionType4 .answer img{
+    max-height:25px;
+}
+
+.questionType4 .drawCanvasWrap{
+    position:relative;
+    z-index:5;
+}
+
+.questionType4 .dragCanvas{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:5;
+    cursor:pointer;
+}
+
+.questionType4 .drawCanvas{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:0;
+}
+
+.questionType4 .dragTable{
+    width:100%;
+}
+
+.questionType4 .dragTable td{
+    width:50%;
+    vertical-align:top;
+    padding:0 10%;
+}
+
+.questionType4 .answered{
+    background-color:rgb(255,255,255);
+    color:rgb(0,50,99);
+}
+
+.questionType5 .imageWrap{
+    position:relative;
+}
+
+.questionType5 .activePoint{
+    position:absolute;
+    z-index:5;
+    background-color:rgba(0,50,99,0.35);
+    color:rgb(255,255,255);
+    text-shadow:2px 2px 2px rgb(0,0,0);
+    text-align:left;
+    border-radius:2px;
+    border:1px solid rgb(255,255,255);
+    font-size:12px;
+    font-weight:600;
+    padding:2%;
+}
+
+.questionType5 .answerTitle{
+    font-weight:600;
+    font-size:14px;
+}
+
+.questionType5 .answerWrap:first-child{
+    margin-top:15px;
+}
+
+.questionType5 .asnwerWrap{
+    margin-bottom:7px;
+}
+
+.questionType5 textarea{
+    width:100%;
+    border-radius:2px;
+    border:1px solid rgb(0,50,99);
+    background-color:rgba(0,50,99,0);
+    font-size:12px;
+    height:125px;
+    resize:none;
+    outline:none;
+    padding:5px;
+    -webkit-transition: all ease 0.25s;
+    -moz-transition: all ease 0.25s;
+    -ms-transition: all ease 0.25s;
+    -o-transition: all ease 0.25s;
+    transition: all ease 0.25s;
+}
+
+.questionType5 textarea:focus{
+    background-color:rgba(0,50,99,0.2);
+}
 
 
 

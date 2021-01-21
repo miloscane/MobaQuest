@@ -94,6 +94,151 @@ questWrap.setAttribute("class","questWrap");
 					}
 					answersWrap.appendChild(answerList);
 					break;
+
+				case 4:
+					//connect the dots
+					var dragCanvasWrap	=	document.createElement("DIV");
+					dragCanvasWrap.setAttribute("class","dragCanvasWrap");
+
+						var dragTable	=	document.createElement("TABLE");
+						dragTable.setAttribute("class","dragTable noselect");
+
+							var tbody	=	document.createElement("TBODY");
+
+								var tr	=	document.createElement("TR");
+
+									var td	=	document.createElement("TD");
+									td.setAttribute("class","answer-column");
+									td.setAttribute("style","padding-left:2%");
+
+										for(var j=0;j<question.answers.length;j++){
+											var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+											if(answer.coordinates.position=="left"){
+												var	answerElem	=	document.createElement("DIV");
+												answerElem.setAttribute("class","answer");
+												answerElem.setAttribute("data-partnerId",Number(answer.partnerId));
+
+												if(answer.image!=""){
+													answerElem.innerHTML="<img src='"+answer.image+"'>";
+												}else{
+													answerElem.innerHTML=answer.text;
+												}
+												td.appendChild(answerElem);
+											}
+										}
+
+									tr.appendChild(td);
+
+									var td	=	document.createElement("TD");
+									td.setAttribute("class","answer-column");
+									td.setAttribute("style","padding-right:2%");
+
+										for(var j=0;j<question.answers.length;j++){
+											var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+											if(answer.coordinates.position=="right"){
+												var	answerElem	=	document.createElement("DIV");
+												answerElem.setAttribute("class","answer");
+												answerElem.setAttribute("data-partnerId",Number(answer.partnerId));
+
+												if(answer.image!=""){
+													answerElem.innerHTML="<img src='"+answer.image+"'>";
+												}else{
+													answerElem.innerHTML=answer.text;
+												}
+												td.appendChild(answerElem);
+											}
+										}
+
+									tr.appendChild(td);
+
+								tbody.appendChild(tr);
+
+							dragTable.appendChild(tbody);
+
+						dragCanvasWrap.appendChild(dragTable);
+
+						var dragCanvas	=	document.createElement("DIV");
+						dragCanvas.setAttribute("class","dragCanvas");
+						dragCanvas.addEventListener("mousedown", dragStart);
+						dragCanvas.addEventListener("mouseup", dragEnd);
+						dragCanvas.addEventListener("mousemove", draggingFunction);
+						dragCanvas.addEventListener("mouseout", dragEndOut);
+						dragCanvas.addEventListener('contextmenu', event => event.preventDefault());
+						//Touches
+						dragCanvas.addEventListener("touchstart", touchStart);
+						dragCanvas.addEventListener("touchend", touchEnd);
+						dragCanvas.addEventListener("touchmove", touchMoveFunction);
+						dragCanvas.addEventListener("touchcancel", touchCancelFunction);
+						dragCanvasWrap.appendChild(dragCanvas);
+
+						var drawCanvas	=	document.createElement("CANVAS");
+						drawCanvas.setAttribute("class","drawCanvas");
+						drawCanvas.setAttribute("width","335");
+						drawCanvas.setAttribute("height","330");
+						dragCanvasWrap.appendChild(drawCanvas);
+
+					answersWrap.appendChild(dragCanvasWrap);
+					break;
+
+				case 5:
+					var imageWrap	=	document.createElement("DIV");
+					imageWrap.setAttribute("class","imageWrap");
+
+						var image	=	document.createElement("IMG");
+						image.setAttribute("src",question.image);
+						imageWrap.appendChild(image);
+
+						for(var j=0;j<question.activePoints.length;j++){
+							var activePoint	=	JSON.parse(JSON.stringify(question.activePoints[j]));
+							var activeElem	=	document.createElement("DIV");
+							activeElem.setAttribute("class","activePoint");
+							activeElem.style.left	=	activePoint.coordinates.x+"%";
+							activeElem.style.top	=	activePoint.coordinates.y+"%";
+							activeElem.style.width	=	activePoint.size.width+"%";
+							activeElem.style.height	=	activePoint.size.height+"%";
+							if(activePoint.text==""){
+								activeElem.innerHTML	=	eval(i+1)+".";
+							}else{
+								activeElem.innerHTML	=	activePoint.text;	
+							}
+
+							imageWrap.appendChild(activeElem);
+						}
+
+					answersWrap.appendChild(imageWrap);
+
+					var answers	=	document.createElement("DIV");
+					answers.setAttribute("class","answers");
+
+						for(var j=0;j<question.activePoints.length;j++){
+							var activePoint	=	JSON.parse(JSON.stringify(question.activePoints[j]));
+
+							var answerWrap	=	document.createElement("DIV");
+							answerWrap.setAttribute("class","answerWrap")
+
+								var answerTitle	=	document.createElement("DIV");
+								answerTitle.setAttribute("class","answerTitle");
+								if(activePoint.text==""){
+									answerTitle.innerHTML	=	eval(i+1)+".";
+								}else{
+									answerTitle.innerHTML	=	activePoint.text;	
+								}
+								answerWrap.appendChild(answerTitle);
+
+								var answerTextarea	=	document.createElement("TEXTAREA");
+								answerTextarea.setAttribute("class","answerTextarea");
+								answerWrap.appendChild(answerTextarea);
+
+							answers.appendChild(answerWrap);
+						}
+
+					answersWrap.appendChild(answers);
+
+					break;
+
+				case 6:
+					var answerWrap	=	document.createElement("")
+					break;
 			}
 
 			questionWrap.appendChild(answersWrap);
