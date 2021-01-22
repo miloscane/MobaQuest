@@ -346,7 +346,7 @@ progress{
     background-color: rgb(255,255,255);
     padding-top: 5px;
     border-top: 2px solid rgb(50,50,50);
-    font-size:16px;
+    font-size:12px;
     text-align:center;
 }
 
@@ -368,6 +368,17 @@ progress{
     font-size:14px;
     font-weight:400;
     margin-bottom:7px;
+}
+
+.questionWrap .score{
+    font-size:14px;
+    font-weight:600;
+    text-align:center;
+    margin-top:20px;
+}
+
+.questionWrap .score span{
+    font-weight:900;
 }
 
 .questionType1 .answer{
@@ -567,7 +578,26 @@ progress{
     background-color:rgba(0,50,99,0.2);
 }
 
+.questionType6 textarea{
+    width:100%;
+    border-radius:2px;
+    border:1px solid rgb(0,50,99);
+    background-color:rgba(0,50,99,0);
+    font-size:12px;
+    height:125px;
+    resize:none;
+    outline:none;
+    padding:5px;
+    -webkit-transition: all ease 0.25s;
+    -moz-transition: all ease 0.25s;
+    -ms-transition: all ease 0.25s;
+    -o-transition: all ease 0.25s;
+    transition: all ease 0.25s;
+}
 
+.questionType6 textarea:focus{
+    background-color:rgba(0,50,99,0.2);
+}
 
 
 

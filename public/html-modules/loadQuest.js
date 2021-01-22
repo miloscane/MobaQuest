@@ -18,7 +18,7 @@ questWrap.setAttribute("class","questWrap");
 		questionWrap.setAttribute("class","questionWrap");
 		questionWrap.classList.add("questionType"+Number(question.type))
 		questionWrap.setAttribute("data-type",Number(question.type));
-		questionWrap.setAttribute("data-scoreImpact",Number(question.scoreImpact))
+		questionWrap.setAttribute("data-scoreimpact",Number(question.scoreImpact))
 
 			var questionText	=	document.createElement("DIV");
 			questionText.setAttribute("class","questionText");
@@ -93,6 +93,29 @@ questWrap.setAttribute("class","questWrap");
 						answerList.appendChild(answerElem);
 					}
 					answersWrap.appendChild(answerList);
+
+					var correctAnswers	=	document.createElement("DIV");
+					correctAnswers.setAttribute("class","correctAnswers");
+					var correctSequence	=	[];
+					for(var j=0;j<question.answers.length;j++){
+						//find order
+						for(var k=0;k<question.answers.length;k++){
+							if(correctSequence.length+1==question.answers[k].order){
+								correctSequence.push(eval(k+1));
+								break;
+							}
+						}
+					}
+					sequenceString="Correct order: [ ";
+					for(var j=0;j<correctSequence.length;j++){
+						sequenceString+=correctSequence[j]+", ";
+					}
+					sequenceString	=	sequenceString.substring(0,sequenceString.length-2);
+					sequenceString+=" ]";
+					correctAnswers.innerHTML=sequenceString;
+
+					answersWrap.appendChild(correctAnswers);
+
 					break;
 
 				case 4:
@@ -181,6 +204,7 @@ questWrap.setAttribute("class","questWrap");
 					break;
 
 				case 5:
+					//tap on image and add description
 					var imageWrap	=	document.createElement("DIV");
 					imageWrap.setAttribute("class","imageWrap");
 
@@ -237,11 +261,24 @@ questWrap.setAttribute("class","questWrap");
 					break;
 
 				case 6:
-					var answerWrap	=	document.createElement("")
+					//write a story and recognize keywords
+					var answerWrap	=	document.createElement("DIV");
+					answerWrap.setAttribute("class","answerWrap");
+
+						var answer	=	document.createElement("TEXTAREA");
+						answer.setAttribute("class","answer");
+						answer.setAttribute("data-keywords",JSON.stringify(question.keywords));
+						answerWrap.appendChild(answer);
+
+					answersWrap.appendChild(answerWrap);
 					break;
 			}
 
 			questionWrap.appendChild(answersWrap);
+
+			var score	=	document.createElement("DIV");
+			score.setAttribute("class","score");
+			questionWrap.appendChild(score);
 
 		questionsWrap.appendChild(questionWrap);
 	}
@@ -330,9 +367,8 @@ function navigate(num){
 		document.getElementById("prev-button").classList.remove("buttonInactive");
 		document.getElementById("prev-button").innerHTML="Review Answers";
 		document.getElementById("result").style.display="block";
-		document.getElementsByClassName("questionsWrap")[0].classList.add("finished")
 		document.getElementById("number").innerHTML="";
-		//finishQuest();
+		finishQuest();
 	}else{
 		for(var i=0;i<questions.length;i++){
 			questions[i].classList.remove("questionActive");
@@ -410,4 +446,132 @@ for(var i=0;i<document.getElementsByClassName("sortable").length;i++){
 		animation: 150,
 		ghostClass: 'invisible'
 	});
+}
+
+function finishQuest(){
+	document.getElementsByClassName("questionsWrap")[0].classList.add("finished");
+	//Scoring
+	var questions	=	document.getElementsByClassName("questionWrap");
+	var scoreArray	=	[];
+	for(var i=0;i<questions.length;i++){
+		var question	=	questions[i];
+		switch (Number(question.dataset.type)){
+			case 1:
+				//True-false
+				var answers	=	question.querySelectorAll(".answer");
+				var PickedCorrectAnswers=	0;
+				var TotalCorrectAnswers	=	0;
+				var PickedWrongAnswers	=	0;
+				for(var j=0;j<answers.length;j++){
+					answer	=	answers[j];
+					if(answer.classList.contains("correct")){
+						TotalCorrectAnswers=TotalCorrectAnswers+1;
+					}
+					if(answer.classList.contains("answerSelected") && answer.classList.contains("correct")){
+						PickedCorrectAnswers	=	PickedCorrectAnswers+1;
+					}
+					if(answer.classList.contains("answerSelected") && !answer.classList.contains("correct")){
+						PickedWrongAnswers	=	PickedWrongAnswers+1;
+					}
+				}
+				var score	=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
+				scoreArray.push(score);
+				break;
+			case 2:
+				//True-false image
+				var answers	=	question.querySelectorAll(".answer");
+				var PickedCorrectAnswers=	0;
+				var TotalCorrectAnswers	=	0;
+				var PickedWrongAnswers	=	0;
+				for(var j=0;j<answers.length;j++){
+					answer	=	answers[j];
+					if(answer.classList.contains("correct")){
+						TotalCorrectAnswers=TotalCorrectAnswers+1;
+					}
+				}
+				var pickedAnswers	=	question.getElementsByClassName("imageAnswer");
+				for(var j=0;j<pickedAnswers.length;j++){
+					var pickedAnswer	=	pickedAnswers[j];
+					var x	=	Number(pickedAnswer.dataset.coordinates.split(",")[0]);
+					var y	=	Number(pickedAnswer.dataset.coordinates.split(",")[1]);
+					var answerCorrect	=	false;
+					for(var k=0;k<answers.length;k++){
+						//Check if x and y are inside element (boundingBox is the large box which contains main image)
+						var elemRect	=	answers[k].getBoundingClientRect();
+						var top			=	elemRect.top-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().top;//Because main image is not at the top of viewport
+						var bottom		=	top	+ elemRect.height;
+						
+						var left	=	elemRect.left-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().left;
+						var right	=	left	+ elemRect.width;
+						
+						if(y<bottom && y>top && x>left && x<right){
+							answerCorrect	=	true;
+							break;
+						}
+					}
+					if(answerCorrect){
+						PickedCorrectAnswers	=	PickedCorrectAnswers+1;
+					}else{
+						PickedWrongAnswers	=	PickedWrongAnswers+1;
+					}
+				}
+				var score	=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
+				scoreArray.push(score);
+				break;
+			case 3:
+				//Reorder actions
+				var correctOrder	=	true;
+				for(var j=0;j<question.getElementsByClassName("answer").length;j++){
+					if(eval(j+1)!=Number(question.getElementsByClassName("answer")[j].dataset.order)){
+						correctOrder	=	false;
+					}
+				}
+				if(correctOrder){
+					scoreArray.push(Number(question.dataset.scoreimpact))
+				}else{
+					scoreArray.push(0);
+				}
+				break;
+			case 4:
+				//connect the dots
+				var PickedCorrectAnswers=	0;
+				var TotalCorrectAnswers	=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer").length;
+				var PickedWrongAnswers	=	0;
+
+				for(var j=0;j<TotalCorrectAnswers;j++){
+					var answer	=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer")[j];
+					var answerCorrect	=	false;
+					for(var k=0;k<TotalCorrectAnswers;k++){
+						if(answer.dataset.answerindex){
+							if(answer.dataset.answerindex==question.getElementsByClassName("answer-column")[1].getElementsByClassName("answer")[k].dataset.answerindex){
+								//found the connected answer, now find out if its the correct one
+								if(answer.dataset.partnerid==question.getElementsByClassName("answer-column")[1].getElementsByClassName("answer")[k].dataset.partnerid){
+									PickedCorrectAnswers	=	PickedCorrectAnswers+1;
+								}else{
+									PickedWrongAnswers	=	PickedWrongAnswers+1;
+								}
+								break;
+							}
+						}
+					}
+				}
+				var score	=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
+				scoreArray.push(score);
+				break;
+			case 5:
+				//tap on image and add description
+				scoreArray.push("review");
+				break;
+			case 6:
+				//write a story and recognize keywords
+				scoreArray.push("review");
+				break;
+		}
+		if(scoreArray[i]!="review"){
+			question.getElementsByClassName("score")[0].innerHTML	=	"Scored <span>" + scoreArray[i] + "</span> out of <span>" + questions[i].dataset.scoreimpact + "</span>";	
+		}else{
+			question.getElementsByClassName("score")[0].innerHTML	=	"Waiting for review";
+		}
+		
+	}
 }
