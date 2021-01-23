@@ -201,6 +201,65 @@ questWrap.setAttribute("class","questWrap");
 						dragCanvasWrap.appendChild(drawCanvas);
 
 					answersWrap.appendChild(dragCanvasWrap);
+
+					var correctAnswers	=	document.createElement("DIV");
+					correctAnswers.setAttribute("class","correctAnswers");
+
+						var title	=	document.createElement("DIV");
+						title.setAttribute("style","text-align:center");
+						title.innerHTML	=	"Correct sequence:"
+						correctAnswers.appendChild(title);
+
+						var correctTable	=	document.createElement("TABLE");
+						correctTable.setAttribute("class","correctTable");
+
+							var tbody	=	document.createElement("TBODY");
+								for(var j=0;j<question.answers.length;j++){
+									var answer	=	question.answers[j];
+									if(answer.coordinates.position=="left"){
+										var tr	=	document.createElement("TR");
+											var td = document.createElement("TD");
+												var answerElem	=	document.createElement("DIV");
+												answerElem.setAttribute("class","correctAnswer");
+												if(answer.image!=""){
+													answerElem.innerHTML="<img src='"+answer.image+"'>";
+												}else{
+													answerElem.innerHTML=answer.text;
+												}
+												td.appendChild(answerElem);
+											tr.appendChild(td);
+
+											var td	=	document.createElement("TD");
+												var answerElem	=	document.createElement("DIV");
+												answerElem.setAttribute("class","correctAnswer");
+												for(var k=0;k<question.answers.length;k++){
+													var partnerAnswer	=	question.answers[k];
+													if(partnerAnswer.partnerId==answer.partnerId){
+														if(partnerAnswer.image!=""){
+															answerElem.innerHTML="<img src='"+partnerAnswer.image+"'>";
+														}else{
+															answerElem.innerHTML=partnerAnswer.text;
+														}
+														td.appendChild(answerElem);
+													}
+												}
+												
+											tr.appendChild(td);
+											
+
+										tbody.appendChild(tr);
+
+									}
+								}
+
+							correctTable.appendChild(tbody);
+
+						correctAnswers.appendChild(correctTable);
+
+					answersWrap.appendChild(correctAnswers)
+
+
+
 					break;
 
 				case 5:
@@ -220,6 +279,7 @@ questWrap.setAttribute("class","questWrap");
 							activeElem.style.top	=	activePoint.coordinates.y+"%";
 							activeElem.style.width	=	activePoint.size.width+"%";
 							activeElem.style.height	=	activePoint.size.height+"%";
+							activeElem.setAttribute("onclick","focusAnswer(this)");
 							if(activePoint.text==""){
 								activeElem.innerHTML	=	eval(i+1)+".";
 							}else{
@@ -253,6 +313,11 @@ questWrap.setAttribute("class","questWrap");
 								answerTextarea.setAttribute("class","answerTextarea");
 								answerWrap.appendChild(answerTextarea);
 
+								var correctAnswers	=	document.createElement("DIV");
+								correctAnswers.setAttribute("class","correctAnswers");
+								correctAnswers.innerHTML=activePoint.correctText;
+								answerWrap.appendChild(correctAnswers);
+
 							answers.appendChild(answerWrap);
 						}
 
@@ -271,6 +336,12 @@ questWrap.setAttribute("class","questWrap");
 						answerWrap.appendChild(answer);
 
 					answersWrap.appendChild(answerWrap);
+
+					var correctAnswers	=	document.createElement("DIV");
+					correctAnswers.setAttribute("class","correctAnswers");
+					correctAnswers.innerHTML=question.correctText;
+					answerWrap.appendChild(correctAnswers);
+
 					break;
 			}
 
@@ -388,6 +459,14 @@ function navigate(num){
 		document.getElementById("result").style.display="none";
 		document.getElementById("number").innerHTML=eval(questionToOpen+1)+"/"+totalQuestions;
 	}
+
+	if(document.getElementsByClassName("questionActive")[0]){
+		if(document.getElementsByClassName("questionActive")[0].getBoundingClientRect().height>document.getElementsByClassName("questWrap")[0].getBoundingClientRect().height){
+			document.getElementsByClassName("questWrap")[0].classList.remove("noOverflow")
+		}else{
+			document.getElementsByClassName("questWrap")[0].classList.add("noOverflow")
+		}
+	}
 }
 
 navigate(1);
@@ -408,35 +487,35 @@ function pickAnswer(elem){
 }
 
 function pickAnswerOnImage(event,elem){
-		var answerExists	=	false;
-		var currentAnswers	=	elem.parentElement.getElementsByClassName("imageAnswer");
-		for(var i=0;i<currentAnswers.length;i++){
-			var currentAnswer	=	currentAnswers[i];
-			var elemRect	=	currentAnswer.getBoundingClientRect();
-			var boundingBox	=	elem;
-			var top			=	elemRect.top-boundingBox.getBoundingClientRect().top;//Because main image is not at the top of viewport
-			var bottom		=	top	+ elemRect.height;
-			
-			var left	=	elemRect.left-boundingBox.getBoundingClientRect().left;
-			var right	=	left	+ elemRect.width;
+	var answerExists	=	false;
+	var currentAnswers	=	elem.parentElement.getElementsByClassName("imageAnswer");
+	for(var i=0;i<currentAnswers.length;i++){
+		var currentAnswer	=	currentAnswers[i];
+		var elemRect	=	currentAnswer.getBoundingClientRect();
+		var boundingBox	=	elem;
+		var top			=	elemRect.top-boundingBox.getBoundingClientRect().top;//Because main image is not at the top of viewport
+		var bottom		=	top	+ elemRect.height;
+		
+		var left	=	elemRect.left-boundingBox.getBoundingClientRect().left;
+		var right	=	left	+ elemRect.width;
 
-			if(event.offsetY<bottom && event.offsetY>top && event.offsetX>left && event.offsetX<right){
-				answerExists	=	true;
-				var answerIndex	=	i;
-				break;
-			}
+		if(event.offsetY<bottom && event.offsetY>top && event.offsetX>left && event.offsetX<right){
+			answerExists	=	true;
+			var answerIndex	=	i;
+			break;
 		}
+	}
 
-		if(!answerExists){
-			var answer	=	document.createElement("DIV");
-			answer.setAttribute("class","imageAnswer");
-			answer.style.top=eval(event.offsetY-13)+"px";
-			answer.style.left=eval(event.offsetX-13)+"px";
-			answer.dataset.coordinates=event.offsetX+","+event.offsetY;
-			elem.parentElement.appendChild(answer);
-		}else{
-			elem.parentElement.removeChild(currentAnswers[answerIndex]);
-		}
+	if(!answerExists){
+		var answer	=	document.createElement("DIV");
+		answer.setAttribute("class","imageAnswer");
+		answer.style.top=eval(event.offsetY-13)+"px";
+		answer.style.left=eval(event.offsetX-13)+"px";
+		answer.dataset.coordinates=event.offsetX+","+event.offsetY;
+		elem.parentElement.appendChild(answer);
+	}else{
+		elem.parentElement.removeChild(currentAnswers[answerIndex]);
+	}
 }
 
 
@@ -446,6 +525,16 @@ for(var i=0;i<document.getElementsByClassName("sortable").length;i++){
 		animation: 150,
 		ghostClass: 'invisible'
 	});
+}
+
+function focusAnswer(elem){
+	var activePoints	=	elem.parentElement.getElementsByClassName(elem.classList[0]);
+	for(var i=0;i<activePoints.length;i++){
+		if(activePoints[i] == elem){
+			document.getElementsByClassName("questionActive")[0].querySelectorAll("textarea")[i].focus();
+			break;
+		}
+	}
 }
 
 function finishQuest(){
@@ -573,5 +662,23 @@ function finishQuest(){
 			question.getElementsByClassName("score")[0].innerHTML	=	"Waiting for review";
 		}
 		
+	}
+	var totalScore	=	0;
+	var reviews	=	0;
+	for(var i=0;i<scoreArray.length;i++){
+		if(scoreArray[i]!="review"){
+			totalScore	=	eval(totalScore + scoreArray[i])
+		}else{
+			reviews++;
+		}
+	}
+
+	document.getElementById("result").innerHTML	=	"You scored <span>" + totalScore + "</span> out of <span>100</span><br>&nbsp;<br>";
+	if(reviews>0){
+		if(reviews==1){
+			document.getElementById("result").innerHTML += reviews + " question is waiting for review";	
+		}else{
+			document.getElementById("result").innerHTML += reviews + " questions are waiting for reviews";	
+		}
 	}
 }
