@@ -1,0 +1,86 @@
+<%- include ("partials/header") -%>
+	<div class="questEditorWrap">
+		<div class="questionNumbersWrap">
+			<ul id="question-numbers-list"></ul>
+			<div class="button addQuestion" onclick="addQuestion()">+</div>
+		</div>
+		<div class="titleWrap">
+			<div class="text">Quest Title: </div>
+			<div class="inputWrap"><input type="text" id="title"></div>
+		</div>
+		<div id="questions-wrap"></div>
+	</div>
+	<div id="question-template" style="display:none">
+		<div class="title">Question text:</div>
+		<textarea class="questionText"></textarea>
+
+		<div class="title">Select Question Type:</div>
+		<div class="questionTypeButtonsWrap">
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">A</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False text</div>
+				</div>
+			</div>
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">B</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False Pick on Image</div>
+				</div>
+			</div>
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">C</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False Pick on Image</div>
+				</div>
+			</div>
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">D</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False Pick on Image</div>
+				</div>
+			</div>
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">E</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False Pick on Image</div>
+				</div>
+			</div>
+			<div class="button" onclick="setQuestionType(this)">
+				<div class="text">F</div>
+				<div class="info">
+					<img src="/info.png">
+					<div class="tooltip">True-False Pick on Image</div>
+				</div>
+			</div>
+		</div>
+		<div class="questionTypes">
+			<div class="questionType">
+				<div class="title">True False-text</div>
+				<div class="answersWrap"></div>
+				<div class="button">Add answer</div>
+			</div>
+			<div class="questionType">
+				<div class="title">True False-image</div>
+			</div>
+			<div class="questionType">
+				<div class="title">Reorder actions</div>
+			</div>
+			<div class="questionType">
+				<div class="title">Connect Answers</div>
+			</div>
+			<div class="questionType">
+				<div class="title">Tap on image and add description</div>
+			</div>
+			<div class="questionType">
+				<div class="title">Write a story</div>
+			</div>
+		</div>
+	</div>
+	<script src="/html-modules/questEditorScript.js"></script>
+<%- include ("partials/footer") -%>
