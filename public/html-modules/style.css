@@ -714,6 +714,8 @@ progress{
     font-size: 20px;
     text-align: center;
     margin-bottom: 8px;
+    padding-bottom:8px;
+    border-bottom:2px solid rgb(50,50,50);
 }
 
 
@@ -871,9 +873,124 @@ progress{
     display:none;
 }
 
+.questEditorWrap .addAnswerButton{
+    text-align:center;
+    width:auto;
+    margin:0 auto;
+    font-size:14px;
+    text-align:center;
+    padding:3px;
+}
+
+.questEditorWrap .questionType .answerWrap{
+    position:relative;
+    margin-bottom: 10px;
+    padding-bottom:10px;
+    border-bottom:2px solid rgb(50,50,50);
+}
 
 
+.questEditorWrap .questionType .answerWrap input{
+    text-align:center;
+}
 
+.questEditorWrap .questionType .answerWrap .killAnswer{
+    display:inline-block;
+    background-color:rgb(250,0,0);
+    color:rgb(255,255,255);
+    font-weight:600;
+    cursor:pointer;
+    top:-10px;
+    right:-10px;
+    z-index:10;
+    position:absolute;
+    padding:5px;
+    border-radius:3px;
+}
+
+
+.questEditorWrap input{
+    border:2px inset rgba(0,0,0,0.4);
+    background-color:rgba(255,255,255,1);
+    outline:none;
+    -webkit-transition:all ease 0.5s;
+    -moz-transition:all ease 0.5s;
+    -ms-transition:all ease 0.5s;
+    -o-transition:all ease 0.5s;
+    transition:all ease 0.5s;
+}
+
+
+.questEditorWrap input:focus{
+    background-color:rgba(20,42,64,1);
+    color:rgb(255,255,255);
+}
+
+.questEditorWrap .questionButtonsWrap{
+    text-align:right;
+}
+
+.questEditorWrap .questionButtonsWrap .button{
+    display:inline-block;
+
+}
+
+.questEditorWrap .questionButtonsWrap .deleteQuestion{
+    background-color:rgb(250,0,0);
+}
+
+
+.questEditorWrap .questionTypes .questionType:nth-child(3) .answerWrap{
+    border:1px solid rgb(20,42,64);
+    font-size:12px;
+    padding:4px;
+    margin:4px auto;
+    margin-bottom:10px;
+}
+
+.questEditorWrap .questionTypes .questionType:nth-child(3) .answerWrap input{
+    text-align:left;
+}
+
+
+.questEditorWrap .questionTypes .questionType:nth-child(4) .answerWrap .answer{
+    display:inline-block;
+    background-color:rgb(20,42,64);
+    border-radius:2px;
+    width:50%;
+    vertical-align:middle;
+    text-align:center;
+    border:2px solid rgb(255,255,255);
+    margin-right:-5px;
+    padding:10px;
+}
+
+.questEditorWrap .questionTypes .questionType:nth-child(6) .correctStory{
+    width:100%;
+    resize:none;
+    height:200px;
+}
+
+.questEditorWrap .questionTypes .questionType:nth-child(2) .imageWrap{
+    position:relative;
+}
+
+
+.questEditorWrap .questionTypes .questionType:nth-child(2) .imageWrap .imageAnswer{
+    position:absolute;
+    z-index:10;
+    top:0;
+    left:0;
+    width:30px;
+    height:30px;
+    background-color:rgba(0,235,0,0.4);
+    border:2px solid rgb(255,255,255);
+    outline: rgb(0,0,0) solid 2px;
+    max-width:90%;
+    max-height:90%;
+    min-width: 2%;
+    min-height:2%;
+}
 
 
 

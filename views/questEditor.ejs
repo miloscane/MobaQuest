@@ -11,6 +11,14 @@
 		<div id="questions-wrap"></div>
 	</div>
 	<div id="question-template" style="display:none">
+		<div class="questionWorth" style="margin-bottom:10px">
+			<div style="display:inline-block;">Question worth:</div> 
+			<div style="display:inline-block;width:50px"><input type="number" max="100" min="0"></div>
+			<div style="display:inline-block;">% out of 100%</div>
+		</div>
+		<div class="questionButtonsWrap">
+			<div class="button deleteQuestion" onclick="removeQuestion(this)">Delete Question</div>
+		</div>
 		<div class="title">Question text:</div>
 		<textarea class="questionText"></textarea>
 
@@ -63,22 +71,35 @@
 			<div class="questionType">
 				<div class="title">True False-text</div>
 				<div class="answersWrap"></div>
-				<div class="button">Add answer</div>
+				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">
 				<div class="title">True False-image</div>
+				<div class="imageWrap">
+					<img src="/imagePlaceholder.jpg" class="image">
+					<input type="file" onchange="imageUploaded(this)">
+				</div>
+				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">
 				<div class="title">Reorder actions</div>
+				<div class="answersWrap"></div>
+				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an action</div>
 			</div>
 			<div class="questionType">
 				<div class="title">Connect Answers</div>
+				<div class="answersWrap"></div>
+				<div class="button addAnswerButton" onclick="addAnswer(this)">Add a pair</div>
 			</div>
 			<div class="questionType">
 				<div class="title">Tap on image and add description</div>
+				<div class="answersWrap"></div>
+				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">
 				<div class="title">Write a story</div>
+				<div style="text-align:left;margin-top:15px;">Write a correct story in the textbox bellow which will be showed after the quest has ended</div>
+				<textarea class="correctStory"></textarea>
 			</div>
 		</div>
 	</div>
