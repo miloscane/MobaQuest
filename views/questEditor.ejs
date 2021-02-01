@@ -8,7 +8,10 @@
 			<div class="text">Quest Title: </div>
 			<div class="inputWrap"><input type="text" id="title"></div>
 		</div>
-		<div id="questions-wrap"></div>
+		<form method="POST" action="/test" enctype="multipart/form-data">
+			<div id="questions-wrap"></div>
+			<button onclick="document.getElementById('form').submit()">Submit</button>
+		</form>
 	</div>
 	<div id="question-template" style="display:none">
 		<div class="questionWorth" style="margin-bottom:10px">
@@ -77,7 +80,7 @@
 				<div class="title">True False-image</div>
 				<div class="imageWrap">
 					<img src="/imagePlaceholder.jpg" class="image">
-					<input type="file" onchange="imageUploaded(this)">
+					<input type="file" name="file1" onchange="imageUploaded(this)">
 				</div>
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
@@ -93,13 +96,16 @@
 			</div>
 			<div class="questionType">
 				<div class="title">Tap on image and add description</div>
-				<div class="answersWrap"></div>
+				<div class="imageWrap">
+					<img src="/imagePlaceholder.jpg" class="image">
+					<input type="file" name="file2" onchange="imageUploaded(this)">
+				</div>
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">
 				<div class="title">Write a story</div>
 				<div style="text-align:left;margin-top:15px;">Write a correct story in the textbox bellow which will be showed after the quest has ended</div>
-				<textarea class="correctStory"></textarea>
+				<textarea class="correctStory" name="story"></textarea>
 			</div>
 		</div>
 	</div>

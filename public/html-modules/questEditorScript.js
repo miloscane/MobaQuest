@@ -202,7 +202,18 @@ function addAnswer(elem){
 				break;
 			case 5:
 				//Tap on image and add a story
+				var answer	=	document.createElement("DIV");
+				answer.setAttribute("class","imageAnswer");
 
+				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
+				$(function() {
+					$(".imageAnswer").draggable({
+						"containment":$(".imageAnswer").parent()
+					}).resizable({
+						"containment":$(".imageAnswer").parent()
+					});
+
+				});
 				break;
 		}
 	}else{

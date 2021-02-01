@@ -992,6 +992,27 @@ progress{
     min-height:2%;
 }
 
+.questEditorWrap .questionTypes .questionType:nth-child(5) .imageWrap{
+    position:relative;
+}
+
+
+.questEditorWrap .questionTypes .questionType:nth-child(5) .imageWrap .imageAnswer{
+    position:absolute;
+    z-index:10;
+    top:0;
+    left:0;
+    width:30px;
+    height:30px;
+    background-color:rgba(0,235,0,0.4);
+    border:2px solid rgb(255,255,255);
+    outline: rgb(0,0,0) solid 2px;
+    max-width:90%;
+    max-height:90%;
+    min-width: 2%;
+    min-height:2%;
+}
+
 
 
 

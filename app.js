@@ -10,6 +10,8 @@ var session				=	require('express-session');
 var cookieParser		=	require('cookie-parser');
 var crypto				=	require('crypto');
 var mongo				=	require('mongodb');
+var multer 				=	require('multer');
+var path				=	require('path');
 
 server.set('view engine','ejs');
 var viewArray	=	[__dirname+'/views'];
@@ -29,6 +31,18 @@ server.use(cookieParser());
 http.listen(process.env.PORT || 3000, function(){
   console.log('Server Started');
 });
+
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './public/uploads/Huntsman/');
+	},
+	filename: function (req, file, cb) {
+		let ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
+		cb(null, file.fieldname + '-' + Date.now()+ext)
+	}
+});
+
+var upload = multer({ storage: storage, limits: { fileSize: 1000000000 } }).any();
 
 var mainFileVersion	=	1.1;
 
@@ -56,7 +70,7 @@ function fetchPageInfo(companyName){
 var mongoClient	=	mongo.MongoClient;
 var url	=	'mongodb+srv://mobatec:m0b@tec!@mobatec.zhull.mongodb.net/MobaQuest?retryWrites=true&w=majority';
 
-mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+/*mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
 	if(err){
 		console.log(err)
 	}else{
@@ -76,7 +90,7 @@ mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
 				console.log("Deleted")
 			}
 		})*/
-		collection.find({}).toArray(function(err,result){
+		/*collection.find({}).toArray(function(err,result){
 			if(err){
 				console.log(err)
 			}else{
@@ -85,7 +99,7 @@ mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
 			}
 		});
 	}
-})
+})*/
 
 /*io.on('connection', function(socket){
 	
@@ -102,6 +116,21 @@ server.get('/',function(req,res){
 	});
 });
 
+/*server.post('/test',upload.any(), function(req,res){
+	console.log(req.files);
+	res.send('Ok')
+});*/
+server.post('/test', (req, res) => {
+
+    upload(req, res, function(err) {
+        // req.file contains information of uploaded file
+        // req.body contains information of text fields, if there were any
+		console.log(req)
+        // Display uploaded image for user validation
+        res.send('ok');
+    });
+});
+
 
 server.get('/:pageName',function(req,res){
 	res.render(req.params.pageName,{
@@ -114,9 +143,6 @@ server.get('/robots.txt', function (req, res) {
     res.type('text/plain');
     res.send("User-agent: *\nDisallow: /");
 });
-
-
-
 
 server.get('*',function(req,res){
 	res.redirect('/');
