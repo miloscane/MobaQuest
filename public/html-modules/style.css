@@ -748,9 +748,12 @@ progress{
 
 
 .questEditorWrap .titleWrap .inputWrap input:focus{
-    background-color:rgba(20,42,64,0.1);
+    background-color:rgba(20,42,64,1);
 }
 
+.questEditorWrap .questionWorth::-webkit-outer-spin-button, .questEditorWrap .questionWorth::-webkit-inner-spin-button {
+    display: none;
+}
 
 .questEditorWrap .questionTypeButtonsWrap{
     text-align:center;
@@ -1013,6 +1016,14 @@ progress{
     min-height:2%;
 }
 
+.questEditorWrap .questionTypes .questionType:nth-child(5) .answersWrap .title{
+    text-align:left;
+}
+
+.questEditorWrap .questionTypes .questionType:nth-child(5) .answersWrap textarea{
+    resize:none;
+    width:100%;
+}
 
 
 

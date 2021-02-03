@@ -10,13 +10,14 @@
 		</div>
 		<form method="POST" action="/test" enctype="multipart/form-data">
 			<div id="questions-wrap"></div>
-			<button onclick="document.getElementById('form').submit()">Submit</button>
+			<input type="text" id="quest-json" name="questjson" style="display:none">
+			<div onclick="submitQuest()">Submit</div>
 		</form>
 	</div>
 	<div id="question-template" style="display:none">
 		<div class="questionWorth" style="margin-bottom:10px">
 			<div style="display:inline-block;">Question worth:</div> 
-			<div style="display:inline-block;width:50px"><input type="number" max="100" min="0"></div>
+			<div style="display:inline-block;width:50px"><input type="number" class="questionWorthInput" max="100" min="0"></div>
 			<div style="display:inline-block;">% out of 100%</div>
 		</div>
 		<div class="questionButtonsWrap">
@@ -80,7 +81,7 @@
 				<div class="title">True False-image</div>
 				<div class="imageWrap">
 					<img src="/imagePlaceholder.jpg" class="image">
-					<input type="file" name="file1" onchange="imageUploaded(this)">
+					<input type="file" class="image2" onchange="imageUploaded(this)">
 				</div>
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
@@ -98,8 +99,9 @@
 				<div class="title">Tap on image and add description</div>
 				<div class="imageWrap">
 					<img src="/imagePlaceholder.jpg" class="image">
-					<input type="file" name="file2" onchange="imageUploaded(this)">
+					<input type="file" class="image5" onchange="imageUploaded(this)">
 				</div>
+				<div class="answersWrap"></div>
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">

@@ -1,0 +1,2 @@
+Round the numbers for scoring
+Add remove answer for image answers
