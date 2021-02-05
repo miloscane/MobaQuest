@@ -1,0 +1,61 @@
+<%- include ("partials/header") -%>
+	<div class="allQuests">
+		<div class="title">All quests</div>
+	</div>
+	<script>
+		var allQuests	=	<%- JSON.stringify(quests) %>;
+		var table	=	document.createElement("TABLE");
+
+			var tr	=	document.createElement("TR");
+
+				var td	=	document.createElement("TD");
+				td.setAttribute("colspan",1);
+				td.innerHTML	=	"Quest Names"
+				tr.appendChild(td);
+
+				var td	=	document.createElement("TD");
+				td.setAttribute("colspan",1);
+				td.innerHTML	=	"Date Added";
+				tr.appendChild(td);
+
+			table.appendChild(tr);
+
+			for(var i=0;i<allQuests.length;i++){
+				var quest	=	allQuests[i];
+				var tr		=	document.createElement("TR");
+
+					var td			=	document.createElement("TD");
+					td.innerHTML	=	quest.name;
+					tr.appendChild(td);
+
+					var td			=	document.createElement("TD");
+					var date		=	new Date(Number(quest.filename))
+					td.innerHTML	=	date.getDate()+"-"+eval(date.getMonth()+1)+"-"+date.getFullYear();
+					tr.appendChild(td);
+
+					var td	=	document.createElement("TD");
+						
+						var button			=	document.createElement("DIV");
+						button.setAttribute("class","button");
+						button.innerHTML	=	"View";
+						button.setAttribute("onclick","window.location.href='/quest/"+quest.filename+"'")
+						td.appendChild(button);
+						
+					tr.appendChild(td);
+
+					var td	=	document.createElement("TD");
+						
+						var button			=	document.createElement("DIV");
+						button.setAttribute("class","button");
+						button.innerHTML	=	"Delete";
+						button.setAttribute("onclick","window.location.href='/deleteQuest/"+quest.filename+"'")
+						td.appendChild(button);
+						
+					tr.appendChild(td);
+
+				table.appendChild(tr);
+			}
+
+		document.getElementsByClassName("allQuests")[0].appendChild(table);
+	</script>
+<%- include ("partials/footer") -%>

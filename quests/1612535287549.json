@@ -1,0 +1,28 @@
+{
+	"company": "Huntsman",
+	"name": "Title of quest",
+	"id": 1612535287502,
+	"questions": [
+		{
+			"text": "",
+			"type": 5,
+			"scoreImpact": 0,
+			"image": "/uploads/Huntsman/file-1-5-1612535287545.jpg",
+			"activePoints": [
+				{
+					"coordinates": {
+						"x": 50.72463768115942,
+						"y": 34.23913043478261
+					},
+					"size": {
+						"width": 20.47101449275362,
+						"height": 15.942028985507244
+					},
+					"correctText": "Correct story for answer"
+				}
+			],
+			"answers": []
+		}
+	],
+	"filename": 1612535287549
+}

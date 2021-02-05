@@ -280,11 +280,7 @@ questWrap.setAttribute("class","questWrap");
 							activeElem.style.width	=	activePoint.size.width+"%";
 							activeElem.style.height	=	activePoint.size.height+"%";
 							activeElem.setAttribute("onclick","focusAnswer(this)");
-							if(activePoint.text==""){
-								activeElem.innerHTML	=	eval(i+1)+".";
-							}else{
-								activeElem.innerHTML	=	activePoint.text;	
-							}
+							activeElem.innerHTML	=	eval(i+1)+".";
 
 							imageWrap.appendChild(activeElem);
 						}
@@ -302,11 +298,7 @@ questWrap.setAttribute("class","questWrap");
 
 								var answerTitle	=	document.createElement("DIV");
 								answerTitle.setAttribute("class","answerTitle");
-								if(activePoint.text==""){
-									answerTitle.innerHTML	=	eval(i+1)+".";
-								}else{
-									answerTitle.innerHTML	=	activePoint.text;	
-								}
+								answerTitle.innerHTML	=	eval(i+1)+".";
 								answerWrap.appendChild(answerTitle);
 
 								var answerTextarea	=	document.createElement("TEXTAREA");
@@ -657,7 +649,8 @@ function finishQuest(){
 				break;
 		}
 		if(scoreArray[i]!="review"){
-			question.getElementsByClassName("score")[0].innerHTML	=	"Scored <span>" + scoreArray[i] + "</span> out of <span>" + questions[i].dataset.scoreimpact + "</span>";	
+			var scoreDisp	=	(scoreArray[i].toString().split(".")[1]) ? scoreArray[i].toFixed(2) : scoreArray[i];
+			question.getElementsByClassName("score")[0].innerHTML	=	"Scored <span>" + scoreDisp + "</span> out of <span>" + questions[i].dataset.scoreimpact + "</span>";	
 		}else{
 			question.getElementsByClassName("score")[0].innerHTML	=	"Waiting for review";
 		}
@@ -667,13 +660,15 @@ function finishQuest(){
 	var reviews	=	0;
 	for(var i=0;i<scoreArray.length;i++){
 		if(scoreArray[i]!="review"){
-			totalScore	=	eval(totalScore + scoreArray[i])
+			totalScore	=	eval(totalScore + scoreArray[i]);
 		}else{
 			reviews++;
 		}
 	}
 
-	document.getElementById("result").innerHTML	=	"You scored <span>" + totalScore + "</span> out of <span>100</span><br>&nbsp;<br>";
+	var totalScoreDisp	=	(totalScore.toString().split(".")[1]) ? totalScore.toFixed(2) : totalScore;
+
+	document.getElementById("result").innerHTML	=	"You scored <span>" + totalScoreDisp + "</span> out of <span>100</span><br>&nbsp;<br>";
 	if(reviews>0){
 		if(reviews==1){
 			document.getElementById("result").innerHTML += reviews + " question is waiting for review";	

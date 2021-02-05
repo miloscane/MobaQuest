@@ -123,21 +123,112 @@ server.get('/',function(req,res){
 server.post('/test', (req, res) => {
 
     upload(req, res, function(err) {
-        // req.file contains information of uploaded file
-        // req.body contains information of text fields, if there were any
-		console.log(req)
-        // Display uploaded image for user validation
-        res.send('ok');
+        // req.files contains information of uploaded files
+        // req.body contains information of text fields
+		//console.log(req)
+		var questJson	=	JSON.parse(req.body.questjson);
+		for(var i=0;i<questJson.questions.length;i++){
+			if(Number(questJson.questions[i].type)==2){
+				//Find the file
+				for(var j=0;j<req.files.length;j++){
+					if(req.files[j].fieldname=="file-"+eval(i+1)+"-2"){
+						questJson.questions[i].image	=	req.files[j].destination.substring(8,req.files[j].destination.length)+req.files[j].filename;
+						break;
+					}
+				}
+			}else if(Number(questJson.questions[i].type)==5){
+				//Find the file
+				for(var j=0;j<req.files.length;j++){
+					if(req.files[j].fieldname=="file-"+eval(i+1)+"-5"){
+						questJson.questions[i].image	=	req.files[j].destination.substring(8,req.files[j].destination.length)+req.files[j].filename;
+						break;
+					}
+				}
+			}
+		}
+		questJson.filename	=	new Date().getTime();
+		fs.writeFileSync("./quests/"+questJson.filename+".json",JSON.stringify(questJson,null,"\t"));
+        res.redirect('/questAdded/'+questJson.filename);
     });
 });
 
+server.get('/questAdded/:questFilename',function(req,res){
+	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
+		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
+		res.render('message',{
+			pageInfo: fetchPageInfo('message',''),
+			message: "<div>Quest \""+questJson.name+"\" has been successfully added.</div><div class='linkWrap'><a href='/quest/"+questJson.filename+"'>View Quest</a></div>"
+		});
+	}else{
+		res.render('message',{
+			pageInfo: fetchPageInfo('message',''),
+			message: "No no :)"
+		});
+	}
+});
+
+server.get('/deleteQuest/:questFilename',function(req,res){
+	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
+		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
+		var filesToDelete	=	[];
+		for(var i=0;i<questJson.questions.length;i++){
+			if(questJson.questions[i].image!=""){
+				filesToDelete.push("./public"+questJson.questions[i].image);
+			}
+		}
+		console.log(filesToDelete)
+		for(var i=0;i<filesToDelete.length;i++){
+			if(fs.existsSync(filesToDelete[i])){
+				fs.unlinkSync(filesToDelete[i].toString());
+			}
+		}
+		fs.unlinkSync(fs.existsSync('./quests/'+req.params.questFilename+'.json'));
+		res.render('message',{
+			pageInfo: fetchPageInfo('message',''),
+			message: "<div>Quest successfully deleted.</div><div class='linkWrap'><a href='/allQuests'>All Quests</a></div>"
+		});
+	}else{
+		res.render('message',{
+			pageInfo: fetchPageInfo('message',''),
+			message: "No no :)"
+		});
+	}
+});
+
+server.get('/allQuests',function(req,res){
+	var questFiles	=	fs.readdirSync('./quests');
+	var quests	=	[];
+	for(var i=0;i<questFiles.length;i++){
+		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+questFiles[i]));
+		quests.push({"filename":questJson.filename,"name":questJson.name});
+	}
+
+	res.render('allQuests',{
+		pageInfo: fetchPageInfo('allQuests',''),
+		quests: quests
+	});
+});
+
+server.get('/quest/:questFilename',function(req,res){
+	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
+		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
+		res.render('questViewer',{
+			pageInfo: fetchPageInfo('questViewer',''),
+			quest: questJson
+		});
+	}else{
+		res.render('message',{
+			pageInfo: fetchPageInfo('message',''),
+			message: "No no :)"
+		});
+	}
+});
 
 server.get('/:pageName',function(req,res){
 	res.render(req.params.pageName,{
 		pageInfo: fetchPageInfo(req.params.pageName,'')
 	});
 });
-
 
 server.get('/robots.txt', function (req, res) {
     res.type('text/plain');

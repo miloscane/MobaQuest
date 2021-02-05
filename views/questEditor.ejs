@@ -8,7 +8,7 @@
 			<div class="text">Quest Title: </div>
 			<div class="inputWrap"><input type="text" id="title"></div>
 		</div>
-		<form method="POST" action="/test" enctype="multipart/form-data">
+		<form method="POST" action="/test" enctype="multipart/form-data" id="form">
 			<div id="questions-wrap"></div>
 			<input type="text" id="quest-json" name="questjson" style="display:none">
 			<div onclick="submitQuest()">Submit</div>
@@ -81,8 +81,8 @@
 				<div class="title">True False-image</div>
 				<div class="imageWrap">
 					<img src="/imagePlaceholder.jpg" class="image">
-					<input type="file" class="image2" onchange="imageUploaded(this)">
 				</div>
+				<input type="file" class="image2" onchange="imageUploaded(this)">
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>
 			<div class="questionType">
@@ -99,8 +99,8 @@
 				<div class="title">Tap on image and add description</div>
 				<div class="imageWrap">
 					<img src="/imagePlaceholder.jpg" class="image">
-					<input type="file" class="image5" onchange="imageUploaded(this)">
 				</div>
+				<input type="file" class="image5" onchange="imageUploaded(this)">
 				<div class="answersWrap"></div>
 				<div class="button addAnswerButton" onclick="addAnswer(this)">Add an answer</div>
 			</div>

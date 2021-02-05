@@ -1,5 +1,5 @@
 function setQuestionType(elem){
-	var buttons	=	elem.parentElement.getElementsByClassName(elem.classList[0]);
+	var buttons		=	elem.parentElement.getElementsByClassName(elem.classList[0]);
 	var buttonIndex	=	false;
 	for(var i=0;i<buttons.length;i++){
 		buttons[i].classList.remove("buttonActive");
@@ -20,8 +20,8 @@ function setQuestionType(elem){
 }
 
 function selectQuestion(elem){
-	var buttons	=	elem.parentElement.getElementsByClassName(elem.classList[0]);
-	var questions	=	document.getElementById("questions-wrap").getElementsByClassName("questionWrap");
+	var buttons			=	elem.parentElement.getElementsByClassName(elem.classList[0]);
+	var questions		=	document.getElementById("questions-wrap").getElementsByClassName("questionWrap");
 	var questionIndex	=	false;
 	for(var i=0;i<buttons.length;i++){
 		buttons[i].classList.remove("buttonActive");
@@ -43,21 +43,21 @@ function selectQuestion(elem){
 }
 
 function addQuestion(){
-	var buttons	=	document.getElementById("question-numbers-list").getElementsByClassName("button");
-	var button	=	document.createElement("LI");
+	var buttons			=	document.getElementById("question-numbers-list").getElementsByClassName("button");
+	var button			=	document.createElement("LI");
 	button.setAttribute("class","button");
 	button.setAttribute("onclick","selectQuestion(this)");
-	button.innerHTML=eval(buttons.length+1)+".";
+	button.innerHTML	=	eval(buttons.length+1)+".";
 	document.getElementById("question-numbers-list").appendChild(button);
 	createQuestion();
 	selectQuestion(button);
 }
 
 function createQuestion(){
-	var questionWrap	=	document.createElement("DIV");
+	var questionWrap		=	document.createElement("DIV");
 	questionWrap.setAttribute("class","questionWrap");
-	questionWrap.innerHTML=document.getElementById("question-template").innerHTML;
-	var questionNumber	=	document.getElementById("question-numbers-list").getElementsByClassName("button").length;
+	questionWrap.innerHTML	=	document.getElementById("question-template").innerHTML;
+	var questionNumber		=	document.getElementById("question-numbers-list").getElementsByClassName("button").length;
 	questionWrap.getElementsByClassName("image2")[0].setAttribute("name","file-"+questionNumber+"-2");//2 is for question type
 	questionWrap.getElementsByClassName("image5")[0].setAttribute("name","file-"+questionNumber+"-5");//5 is for question type
 
@@ -66,7 +66,7 @@ function createQuestion(){
 
 function removeQuestion(elem){
 	var questionIndex	=	false;
-	var questions	=	elem.parentElement.parentElement.parentElement.getElementsByClassName("questionWrap");
+	var questions		=	elem.parentElement.parentElement.parentElement.getElementsByClassName("questionWrap");
 	for(var i=0;i<questions.length;i++){
 		if(elem.parentElement.parentElement==questions[i]){
 			questionIndex	=	i;
@@ -84,12 +84,10 @@ function removeQuestion(elem){
 
 function imageUploaded(elem){
 	if(elem.files && elem.files[0]){
-		var reader = new FileReader();
-		reader.onload = function(e){
-			elem.parentElement.getElementsByClassName("image")[0].src=e.target.result;
-
+		var reader		=	new FileReader();
+		reader.onload 	=	function(e){
+			elem.parentElement.getElementsByClassName("image")[0].src	=	e.target.result;
 		}
-
 		reader.readAsDataURL(elem.files[0]);
 	}
 }
@@ -120,10 +118,10 @@ function addAnswer(elem){
 						answerInput.setAttribute("class","answerTextInput");
 						answer.appendChild(answerInput);
 
-						var answerDelete	=	document.createElement("DIV");
+						var answerDelete		=	document.createElement("DIV");
 						answerDelete.setAttribute("class","killAnswer");
 						answerDelete.setAttribute("onclick","this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)");
-						answerDelete.innerHTML="X";
+						answerDelete.innerHTML	=	"X";
 						answer.appendChild(answerDelete);
 
 					answerWrap.appendChild(answer);
@@ -131,8 +129,8 @@ function addAnswer(elem){
 					var answerAttributes	=	document.createElement("DIV");
 					answerAttributes.setAttribute("class","answerAttributes");
 
-						var answerAttribute	=	document.createElement("DIV");
-						answerAttribute.innerHTML="<div style='display:inline-block'>Answer is True: </div><div style='display:inline-block;width:20px;'><input class='truefalse' type='checkbox'></div>";
+						var answerAttribute			=	document.createElement("DIV");
+						answerAttribute.innerHTML	=	"<div style='display:inline-block'>Answer is True: </div><div style='display:inline-block;width:20px;'><input class='truefalse' type='checkbox'></div>";
 						answerAttributes.appendChild(answerAttribute);
 
 					answerWrap.appendChild(answerAttributes);
@@ -144,6 +142,17 @@ function addAnswer(elem){
 				var answer	=	document.createElement("DIV");
 				answer.setAttribute("class","imageAnswer");
 				answer.setAttribute("style","width:30px;height:30px;top:0px;left:0px;");
+
+					var relative	=	document.createElement("DIV");
+					relative.setAttribute("class","relative");
+
+						var killAnswer			=	document.createElement("DIV");
+						killAnswer.setAttribute("class","killAnswer");
+						killAnswer.setAttribute("onclick","this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)");
+						killAnswer.innerHTML	=	"x";
+						relative.appendChild(killAnswer);
+
+					answer.appendChild(relative);
 
 				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
 				$(function() {
@@ -165,10 +174,10 @@ function addAnswer(elem){
 					answer.setAttribute("class","answer");
 					answerWrap.appendChild(answer);
 
-					var answerDelete	=	document.createElement("DIV");
+					var answerDelete		=	document.createElement("DIV");
 					answerDelete.setAttribute("class","killAnswer");
 					answerDelete.setAttribute("onclick","this.parentElement.parentElement.removeChild(this.parentElement)");
-					answerDelete.innerHTML="X";
+					answerDelete.innerHTML	=	"X";
 					answerWrap.appendChild(answerDelete);
 
 				questionTypes[questionType-1].getElementsByClassName("answersWrap")[0].appendChild(answerWrap);
@@ -211,7 +220,20 @@ function addAnswer(elem){
 				var answer	=	document.createElement("DIV");
 				answer.setAttribute("class","imageAnswer");
 				answer.setAttribute("style","width:30px;height:30px;top:0px;left:0px;");
-				answer.innerHTML=eval(questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer").length+1)+".";
+
+
+					var relative	=	document.createElement("DIV");
+					relative.setAttribute("class","relative");
+					relative.innerHTML=eval(questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer").length+1)+".";
+
+						var killAnswer	=	document.createElement("DIV");
+						killAnswer.setAttribute("class","killAnswer");
+						killAnswer.setAttribute("data-index",eval(questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer").length));
+						killAnswer.setAttribute("onclick","this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('answersWrap')[0].removeChild(this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('answersWrap')[0].getElementsByClassName('answerWrap')[Number(this.dataset.index)]);this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)");
+						killAnswer.innerHTML="x";
+						relative.appendChild(killAnswer);
+
+					answer.appendChild(relative);
 
 				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
 				$(function() {
@@ -405,5 +427,5 @@ function submitQuest(){
 
 	document.getElementById("quest-json").value=JSON.stringify(questJson);
 	console.log(questJson)
-	//document.getElementById('form').submit();
+	document.getElementById('form').submit();
 }

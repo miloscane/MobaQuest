@@ -1,0 +1,32 @@
+{
+	"company": "Huntsman",
+	"name": "",
+	"id": 1612535209132,
+	"questions": [
+		{
+			"text": "",
+			"type": 2,
+			"scoreImpact": 0,
+			"image": "/uploads/Huntsman/file-1-2-1612535209195.jpg",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "",
+					"correct": "",
+					"coordinates": {
+						"x": 39.492753623188406,
+						"y": 10.144927536231885
+					},
+					"size": {
+						"width": 21.014492753623188,
+						"height": 21.014492753623188
+					},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				}
+			]
+		}
+	],
+	"filename": 1612535209198
+}
