@@ -8,7 +8,8 @@
 			<div class="text">Quest Title: </div>
 			<div class="inputWrap"><input type="text" id="title"></div>
 		</div>
-		<form method="POST" action="/test" enctype="multipart/form-data" id="form">
+		<form method="POST" action="/newQuest" enctype="multipart/form-data" id="form">
+			<input id="filename" name="filename" style="display:none">
 			<div id="questions-wrap"></div>
 			<input type="text" id="quest-json" name="questjson" style="display:none">
 			<div onclick="submitQuest()">Submit</div>
@@ -111,5 +112,13 @@
 			</div>
 		</div>
 	</div>
+	<script>var quest 	=	false;</script>
 	<script src="/html-modules/questEditorScript.js"></script>
+	<% if (typeof quest!="undefined") { %>
+		<script>
+			quest	=	<%- JSON.stringify(quest) %>;
+			loadQuestIntoEditor(quest)
+		</script>
+	<% } %>
+	
 <%- include ("partials/footer") -%>

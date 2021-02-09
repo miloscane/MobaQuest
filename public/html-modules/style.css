@@ -752,7 +752,7 @@ progress{
     background-color:rgba(20,42,64,1);
 }
 
-.questEditorWrap .questionWorth::-webkit-outer-spin-button, .questEditorWrap .questionWorth::-webkit-inner-spin-button {
+.questEditorWrap .questionWorthInput::-webkit-outer-spin-button, .questEditorWrap .questionWorthInput::-webkit-inner-spin-button {
     display: none;
 }
 

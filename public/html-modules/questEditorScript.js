@@ -92,7 +92,9 @@ function imageUploaded(elem){
 	}
 }
 
-addQuestion();
+if(!quest){
+	addQuestion();
+}
 
 function addAnswer(elem){
 	var questionType	=	false;
@@ -403,7 +405,7 @@ function submitQuest(){
 				questionJson.answers		=	[];
 				var activePoints			=	question.getElementsByClassName("imageWrap")[1].getElementsByClassName("imageAnswer");
 				var totalWidth				=	question.getElementsByClassName("imageWrap")[1].offsetWidth;
-				var totalHeight				=	question.getElementsByClassName("imageWrap")[1].offsetHeight;
+				var totalHeight				=	question.getElementsByClassName("imageWrap")[1].offsetWidth;
 				for(var j=0;j<activePoints.length;j++){
 					var activePointJson				=	{};
 					var activePoint					=	activePoints[j];
@@ -429,3 +431,79 @@ function submitQuest(){
 	console.log(questJson)
 	document.getElementById('form').submit();
 }
+
+function loadQuestIntoEditor(quest){
+	document.getElementById("filename").value	=	quest.filename;
+	document.getElementById("form").setAttribute("action","/editQuest");
+	document.getElementById("title").value		=	quest.name;
+	for(var i=0;i<quest.questions.length;i++){
+		addQuestion();
+		var questionJson	=	JSON.parse(JSON.stringify(quest.questions[i]));
+		var questionElem	=	document.getElementById("questions-wrap").getElementsByClassName("questionWrap")[i];
+		questionElem.getElementsByClassName("questionWorthInput")[0].value	=	questionJson.scoreImpact;
+		questionElem.getElementsByClassName("questionText")[0].value		=	questionJson.text;
+		setQuestionType(questionElem.getElementsByClassName("questionTypeButtonsWrap")[0].getElementsByClassName("button")[Number(questionJson.type)-1]);
+		switch (Number(questionJson.type)){
+			case 1:
+				//True False
+				for(var j=0;j<questionJson.answers.length;j++){
+					var answer	=	JSON.parse(JSON.stringify(questionJson.answers[j]));
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("addAnswerButton")[0].click();
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("answersWrap")[0].getElementsByClassName("answerWrap")[j].getElementsByClassName("answerTextInput")[0].value	=	answer.text;
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("answersWrap")[0].getElementsByClassName("answerWrap")[j].getElementsByClassName("truefalse")[0].checked		=	answer.correct;
+				}
+				break;
+			case 2:
+				//True false image
+				questionElem.getElementsByClassName("image")[0].src	=	questionJson.image;
+				for(var j=0;j<questionJson.answers.length;j++){
+					var answer	=	JSON.parse(JSON.stringify(questionJson.answers[j]));
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("addAnswerButton")[0].click();
+					var	width	=	document.getElementById("questions-wrap").offsetWidth*answer.size.width/100;
+					var	height	=	document.getElementById("questions-wrap").offsetWidth*answer.size.height/100;
+					var top		=	document.getElementById("questions-wrap").offsetWidth*answer.coordinates.y/100;
+					var left	=	document.getElementById("questions-wrap").offsetWidth*answer.coordinates.x/100;
+					questionElem.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer")[j].style.width	=	width+"px";
+					questionElem.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer")[j].style.height	=	height+"px";
+					questionElem.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer")[j].style.top		=	top+"px";
+					questionElem.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer")[j].style.left		=	left+"px";
+				}
+				break;
+			case 3:
+				//Reorder actions
+				for(var j=0;j<questionJson.answers.length;j++){
+					var answer	=	JSON.parse(JSON.stringify(questionJson.answers[j]));
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("addAnswerButton")[0].click();
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("answersWrap")[0].getElementsByClassName("answerWrap")[j].getElementsByClassName("answer")[0].value		=	answer.text;
+				}
+				break;
+			case 4:
+				//Connect the dots
+				for(var j=0;j<questionJson.answers.length/2;j++){
+					var answer		=	JSON.parse(JSON.stringify(questionJson.answers[j]));
+					for(var k=questionJson.answers.length/2;k<questionJson.answers.length;k++){
+						if(answer.partnerId==questionJson.answers[k].partnerId){
+							var answerPair	=	JSON.parse(JSON.stringify(questionJson.answers[k]));
+						}
+					}
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("addAnswerButton")[0].click();
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("answersWrap")[0].getElementsByClassName("answerWrap")[j].getElementsByClassName("answerInput")[0].value	=	answer.text;
+					questionElem.getElementsByClassName("questionType")[Number(questionJson.type)-1].getElementsByClassName("answersWrap")[0].getElementsByClassName("answerWrap")[j].getElementsByClassName("answerInput")[1].value	=	answerPair.text;
+				}
+
+				break;
+			case 5:
+				//Tap on image and add a story
+
+				break;
+			case 6:
+				//Write a story
+
+				break;
+
+		}
+	}
+}
+
+
+

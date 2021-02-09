@@ -1,0 +1,250 @@
+{
+	"company": "Huntsman",
+	"name": "Second Quest",
+	"id": 1612713638655,
+	"questions": [
+		{
+			"text": "The reflux of C-(2)404 is reduced. How big are the consequences for top temperature?",
+			"type": 1,
+			"scoreImpact": 10,
+			"image": "",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "High",
+					"correct": true,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Medium",
+					"correct": false,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Low",
+					"correct": false,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				}
+			]
+		},
+		{
+			"text": "Which types of pumps are started with opened discharge valve?",
+			"type": 1,
+			"scoreImpact": 10,
+			"image": "",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "Centrifugal",
+					"correct": false,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Liquid ring",
+					"correct": true,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Displacement",
+					"correct": true,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Membrane",
+					"correct": true,
+					"coordinates": {},
+					"size": {},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				}
+			]
+		},
+		{
+			"text": "Tap on the butterfly valve.",
+			"type": 2,
+			"scoreImpact": 10,
+			"image": "/uploads/Huntsman/file-3-2-1612713638701.png",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "",
+					"correct": "",
+					"coordinates": {
+						"x": 4.166666666666666,
+						"y": 67.3913043478261
+					},
+					"size": {
+						"width": 17.391304347826086,
+						"height": 17.391304347826086
+					},
+					"order": "",
+					"partnerId": "",
+					"image": ""
+				}
+			]
+		},
+		{
+			"text": "Mark all gate valves.",
+			"type": 2,
+			"scoreImpact": 10,
+			"image": "/uploads/Huntsman/file-4-2-1612713638707.png",
+			"activePoints": [],
+			"answers": []
+		},
+		{
+			"text": "Drag and drop actions to reorder actions for a proper centrifugal pump startup.",
+			"type": 3,
+			"scoreImpact": 10,
+			"image": "",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "Close discharge valve",
+					"correct": "",
+					"coordinates": {},
+					"size": {},
+					"order": 1,
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Open suction valve",
+					"correct": "",
+					"coordinates": {},
+					"size": {},
+					"order": 2,
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Relieve Air",
+					"correct": "",
+					"coordinates": {},
+					"size": {},
+					"order": 3,
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Flip the start switch",
+					"correct": "",
+					"coordinates": {},
+					"size": {},
+					"order": 4,
+					"partnerId": "",
+					"image": ""
+				},
+				{
+					"text": "Open discharge valve",
+					"correct": "",
+					"coordinates": {},
+					"size": {},
+					"order": 5,
+					"partnerId": "",
+					"image": ""
+				}
+			]
+		},
+		{
+			"text": "Connect pairs",
+			"type": 4,
+			"scoreImpact": 10,
+			"image": "",
+			"activePoints": [],
+			"answers": [
+				{
+					"text": "1",
+					"correct": "",
+					"coordinates": {
+						"position": "left"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 1,
+					"image": ""
+				},
+				{
+					"text": "2",
+					"correct": "",
+					"coordinates": {
+						"position": "left"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 2,
+					"image": ""
+				},
+				{
+					"text": "3",
+					"correct": "",
+					"coordinates": {
+						"position": "left"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 3,
+					"image": ""
+				},
+				{
+					"text": "A",
+					"correct": "",
+					"coordinates": {
+						"position": "right"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 1,
+					"image": ""
+				},
+				{
+					"text": "B",
+					"correct": "",
+					"coordinates": {
+						"position": "right"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 2,
+					"image": ""
+				},
+				{
+					"text": "C",
+					"correct": "",
+					"coordinates": {
+						"position": "right"
+					},
+					"size": {},
+					"order": "",
+					"partnerId": 3,
+					"image": ""
+				}
+			]
+		}
+	],
+	"filename": 1612713638719
+}

@@ -120,7 +120,7 @@ server.get('/',function(req,res){
 	console.log(req.files);
 	res.send('Ok')
 });*/
-server.post('/test', (req, res) => {
+server.post('/newQuest', (req, res) => {
 
     upload(req, res, function(err) {
         // req.files contains information of uploaded files
@@ -176,13 +176,12 @@ server.get('/deleteQuest/:questFilename',function(req,res){
 				filesToDelete.push("./public"+questJson.questions[i].image);
 			}
 		}
-		console.log(filesToDelete)
 		for(var i=0;i<filesToDelete.length;i++){
 			if(fs.existsSync(filesToDelete[i])){
 				fs.unlinkSync(filesToDelete[i].toString());
 			}
 		}
-		fs.unlinkSync(fs.existsSync('./quests/'+req.params.questFilename+'.json'));
+		fs.unlinkSync('./quests/'+req.params.questFilename+'.json');
 		res.render('message',{
 			pageInfo: fetchPageInfo('message',''),
 			message: "<div>Quest successfully deleted.</div><div class='linkWrap'><a href='/allQuests'>All Quests</a></div>"
@@ -199,8 +198,10 @@ server.get('/allQuests',function(req,res){
 	var questFiles	=	fs.readdirSync('./quests');
 	var quests	=	[];
 	for(var i=0;i<questFiles.length;i++){
-		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+questFiles[i]));
-		quests.push({"filename":questJson.filename,"name":questJson.name});
+		if(questFiles[i].split(".")[1]=="json"){
+			var questJson	=	JSON.parse(fs.readFileSync('./quests/'+questFiles[i]));
+			quests.push({"filename":questJson.filename,"name":questJson.name});
+		}
 	}
 
 	res.render('allQuests',{
@@ -213,13 +214,29 @@ server.get('/quest/:questFilename',function(req,res){
 	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
 		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
 		res.render('questViewer',{
-			pageInfo: fetchPageInfo('questViewer',''),
-			quest: questJson
+			pageInfo: 	fetchPageInfo('questViewer',''),
+			quest: 		questJson
 		});
 	}else{
 		res.render('message',{
-			pageInfo: fetchPageInfo('message',''),
-			message: "No no :)"
+			pageInfo: 	fetchPageInfo('message',''),
+			message: 	"No no :)"
+		});
+	}
+});
+
+
+server.get('/questEditor/:questFilename',function(req,res){
+	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
+		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
+		res.render('questEditor',{
+			pageInfo: 	fetchPageInfo('questEditor',''),
+			quest: 		questJson
+		});
+	}else{
+		res.render('message',{
+			pageInfo: 	fetchPageInfo('message',''),
+			message: 	"No no :)"
 		});
 	}
 });
