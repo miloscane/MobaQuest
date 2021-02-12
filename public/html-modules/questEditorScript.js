@@ -115,7 +115,7 @@ function addAnswer(elem){
 					var answer	=	document.createElement("DIV");
 					answer.setAttribute("class","button answer");
 
-						var answerInput	=	document.createElement("INPUT");
+						var answerInput			=	document.createElement("INPUT");
 						answerInput.setAttribute("type","text");
 						answerInput.setAttribute("class","answerTextInput");
 						answer.appendChild(answerInput);
@@ -143,7 +143,7 @@ function addAnswer(elem){
 				//true-false image
 				var answer	=	document.createElement("DIV");
 				answer.setAttribute("class","imageAnswer");
-				answer.setAttribute("style","width:30px;height:30px;top:0px;left:0px;");
+				answer.setAttribute("style","width:100px;height:100px;top:100px;left:100px;");
 
 					var relative	=	document.createElement("DIV");
 					relative.setAttribute("class","relative");
@@ -153,25 +153,27 @@ function addAnswer(elem){
 						killAnswer.setAttribute("onclick","this.parentElement.parentElement.parentElement.removeChild(this.parentElement.parentElement)");
 						killAnswer.innerHTML	=	"x";
 						relative.appendChild(killAnswer);
+				
+
 
 					answer.appendChild(relative);
 
-				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
-				$(function() {
-					$(".imageAnswer").draggable({
-						"containment":$(".imageAnswer").parent()
-					}).resizable({
-						"containment":$(".imageAnswer").parent()
-					});
 
-				});
+				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
+				
+				$(answer).draggable({
+			        containment: $(answer).parent()
+			    }).resizable({
+			        containment: $(answer).parent()
+			    });
+
 				break;
 			case 3:
 				//Reorder actions
 				var answerWrap	=	document.createElement("DIV");
 				answerWrap.setAttribute("class","answerWrap");
 
-					var answer	=	document.createElement("INPUT");
+					var answer				=	document.createElement("INPUT");
 					answer.setAttribute("type","text");
 					answer.setAttribute("class","answer");
 					answerWrap.appendChild(answer);
@@ -221,7 +223,7 @@ function addAnswer(elem){
 				//Tap on image and add a story
 				var answer	=	document.createElement("DIV");
 				answer.setAttribute("class","imageAnswer");
-				answer.setAttribute("style","width:30px;height:30px;top:0px;left:0px;");
+				answer.setAttribute("style","width:100px;height:100px;top:100px;left:100px;");
 
 
 					var relative	=	document.createElement("DIV");
@@ -237,15 +239,14 @@ function addAnswer(elem){
 
 					answer.appendChild(relative);
 
-				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
-				$(function() {
-					$(".imageAnswer").draggable({
-						"containment":$(".imageAnswer").parent()
-					}).resizable({
-						"containment":$(".imageAnswer").parent()
-					});
 
-				});
+				questionTypes[questionType-1].getElementsByClassName("imageWrap")[0].appendChild(answer);
+
+				$(answer).draggable({
+			        containment: $(answer).parent()
+			    }).resizable({
+			        containment: $(answer).parent()
+			    });
 
 				var answerWrap	=	document.createElement("DIV");
 				answerWrap.setAttribute("class","answerWrap");
@@ -278,10 +279,10 @@ function submitQuest(){
 	
 	for(var i=0;i<questions.length;i++){
 		var question			=	questions[i];//Hide all questions first
-		for(var j=0;j<questions.length;j++){
+		/*for(var j=0;j<questions.length;j++){
 			questions[j].style.display	=	"none";
 		}
-		question.style.display	=	"block";//You need to display images to extract widths and heights
+		question.style.display	=	"block";//You need to display images to extract widths and heights*/
 		var questionType		=	-1;
 		var buttons				=	question.getElementsByClassName("questionTypeButtonsWrap")[0].getElementsByClassName("button");
 		for(var j=0;j<buttons.length;j++){
@@ -321,8 +322,8 @@ function submitQuest(){
 				questionJson.activePoints	=	[];
 				questionJson.answers		=	[];
 				var answers					=	question.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer");
-				var totalWidth				=	question.getElementsByClassName("imageWrap")[0].offsetWidth;
-				var totalHeight				=	question.getElementsByClassName("imageWrap")[0].offsetHeight;
+				var totalWidth				=	document.getElementById("questions-wrap").offsetWidth;
+				var totalHeight				=	document.getElementById("questions-wrap").offsetWidth;
 				for(var j=0;j<answers.length;j++){
 					var answerJson				=	{};
 					var answer					=	answers[j];
@@ -404,8 +405,8 @@ function submitQuest(){
 				questionJson.activePoints	=	[];
 				questionJson.answers		=	[];
 				var activePoints			=	question.getElementsByClassName("imageWrap")[1].getElementsByClassName("imageAnswer");
-				var totalWidth				=	question.getElementsByClassName("imageWrap")[1].offsetWidth;
-				var totalHeight				=	question.getElementsByClassName("imageWrap")[1].offsetWidth;
+				var totalWidth				=	document.getElementById("questions-wrap").offsetWidth;
+				var totalHeight				=	document.getElementById("questions-wrap").offsetWidth;
 				for(var j=0;j<activePoints.length;j++){
 					var activePointJson				=	{};
 					var activePoint					=	activePoints[j];
@@ -433,9 +434,10 @@ function submitQuest(){
 }
 
 function loadQuestIntoEditor(quest){
-	document.getElementById("filename").value	=	quest.filename;
+	document.getElementById("filename").value			=	quest.filename;
 	document.getElementById("form").setAttribute("action","/editQuest");
-	document.getElementById("title").value		=	quest.name;
+	document.getElementById("title").value				=	quest.name;
+	document.getElementById("submit-button").innerHTML	=	"Submit Changes";
 	for(var i=0;i<quest.questions.length;i++){
 		addQuestion();
 		var questionJson	=	JSON.parse(JSON.stringify(quest.questions[i]));

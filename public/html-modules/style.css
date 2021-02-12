@@ -321,6 +321,7 @@ progress{
     cursor: pointer;
     background-color: rgb(0,50,99);
     color: rgb(255,255,255);
+    text-align:center;
     border: 3px outset rgba(0,50,99,0.5);
     -webkit-transition:all ease 0.5s;
     -moz-transition:all ease 0.5s;
@@ -884,6 +885,10 @@ progress{
     font-size:14px;
     text-align:center;
     padding:3px;
+}
+
+.questEditorWrap .questionType .imageAnswer{
+    position:relative;
 }
 
 .questEditorWrap .questionType .answerWrap{
