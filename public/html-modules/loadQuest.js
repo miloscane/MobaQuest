@@ -4,35 +4,35 @@ var elemToAdd	=	document.getElementById("site-wrap");
 var questWrap	=	document.createElement("DIV");
 questWrap.setAttribute("class","questWrap");
 
-	var questTitle	=	document.createElement("DIV");
+	var questTitle			=	document.createElement("DIV");
 	questTitle.setAttribute("class","questTitle");
-	questTitle.innerHTML=quest.name;
+	questTitle.innerHTML	=	quest.name;
 	questWrap.appendChild(questTitle);
 
-	var questionsWrap	=	document.createElement("DIV");
+	var questionsWrap		=	document.createElement("DIV");
 	questionsWrap.setAttribute("class","questionsWrap");
 
 	for(var i=0;i<quest.questions.length;i++){
 		var questionWrap	=	document.createElement("DIV");
-		var question	=	JSON.parse(JSON.stringify(quest.questions[i]));
+		var question		=	JSON.parse(JSON.stringify(quest.questions[i]));
 		questionWrap.setAttribute("class","questionWrap");
 		questionWrap.classList.add("questionType"+Number(question.type))
 		questionWrap.setAttribute("data-type",Number(question.type));
 		questionWrap.setAttribute("data-scoreimpact",Number(question.scoreImpact))
 
-			var questionText	=	document.createElement("DIV");
+			var questionText		=	document.createElement("DIV");
 			questionText.setAttribute("class","questionText");
 			questionText.innerHTML	=	question.text;
 			questionWrap.appendChild(questionText);
 
-			var answersWrap	=	document.createElement("DIV");
+			var answersWrap			=	document.createElement("DIV");
 			answersWrap.setAttribute("class","answersWrap");
 
 			switch (Number(question.type)){
 				case 1:
 					//True-false
 					for(var j=0;j<question.answers.length;j++){
-						var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+						var answer		=	JSON.parse(JSON.stringify(question.answers[j]));
 						var answerElem	=	document.createElement("DIV");
 						answerElem.setAttribute("class","answer button");
 						answerElem.setAttribute("onclick","pickAnswer(this)");
@@ -40,9 +40,9 @@ questWrap.setAttribute("class","questWrap");
 							answerElem.classList.add("correct");
 						}
 						if(answer.image!=""){
-							answerElem.innerHTML="<img class='answerImage' src='"+answer.image+"'>";
+							answerElem.innerHTML	=	"<img class='answerImage' src='"+answer.image+"'>";
 						}else{
-							answerElem.innerHTML=answer.text;
+							answerElem.innerHTML	=	answer.text;
 						}
 						answersWrap.appendChild(answerElem);
 
@@ -60,13 +60,13 @@ questWrap.setAttribute("class","questWrap");
 						imageWrap.appendChild(image);
 
 						for(var j=0;j<question.answers.length;j++){
-							var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
-							var imageAnswer	=	document.createElement("DIV");
+							var answer					=	JSON.parse(JSON.stringify(question.answers[j]));
+							var imageAnswer				=	document.createElement("DIV");
 							imageAnswer.setAttribute("class","answer correct");
-							imageAnswer.style.top=answer.coordinates.y+"%";
-							imageAnswer.style.left=answer.coordinates.x+"%";
-							imageAnswer.style.width=answer.size.width+"%";
-							imageAnswer.style.height=answer.size.height+"%";
+							imageAnswer.style.top		=	answer.coordinates.y+"%";
+							imageAnswer.style.left		=	answer.coordinates.x+"%";
+							imageAnswer.style.width		=	answer.size.width+"%";
+							imageAnswer.style.height	=	answer.size.height+"%";
 							imageWrap.appendChild(imageAnswer);
 						}
 
@@ -81,38 +81,35 @@ questWrap.setAttribute("class","questWrap");
 
 				case 3:
 					//Reorder
-					var answerList	=	document.createElement("UL");
+					var answerList			=	document.createElement("UL");
 					answerList.setAttribute("class","sortable");
 					answerList.setAttribute("id","sortable"+i);
-					for(var j=0;j<question.answers.length;j++){
-						var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
-						var answerElem	=	document.createElement("LI");
+					var shuffledAnswers		=	shuffleArray(JSON.parse(JSON.stringify(question.answers)));
+					for(var j=0;j<shuffledAnswers.length;j++){
+						var answer							=	JSON.parse(JSON.stringify(shuffledAnswers[j]));
+						var answerElem						=	document.createElement("LI");
 						answerElem.setAttribute("class","answer");
 						answerElem.setAttribute("data-order",Number(answer.order));
-						answerElem.innerHTML	=	eval(j+1)+". "+answer.text;
+						shuffledAnswers[j].displaynum		=	eval(j+1);
+						answerElem.innerHTML				=	eval(j+1)+". "+answer.text;
 						answerList.appendChild(answerElem);
 					}
 					answersWrap.appendChild(answerList);
 
-					var correctAnswers	=	document.createElement("DIV");
+					var correctAnswers			=	document.createElement("DIV");
 					correctAnswers.setAttribute("class","correctAnswers");
-					var correctSequence	=	[];
-					for(var j=0;j<question.answers.length;j++){
-						//find order
-						for(var k=0;k<question.answers.length;k++){
-							if(correctSequence.length+1==question.answers[k].order){
-								correctSequence.push(eval(k+1));
-								break;
-							}
-						}
+					var correctSequence			=	[];
+					shuffledAnswers.sort((a,b)=>a.order - b.order);
+					for(var j=0;j<shuffledAnswers.length;j++){
+						correctSequence.push(shuffledAnswers[j].displaynum);
 					}
-					sequenceString="Correct order: [ ";
+					sequenceString				=	"Correct order: [ ";
 					for(var j=0;j<correctSequence.length;j++){
-						sequenceString+=correctSequence[j]+", ";
+						sequenceString			+=	correctSequence[j]+", ";
 					}
-					sequenceString	=	sequenceString.substring(0,sequenceString.length-2);
-					sequenceString+=" ]";
-					correctAnswers.innerHTML=sequenceString;
+					sequenceString				=	sequenceString.substring(0,sequenceString.length-2);
+					sequenceString				+=	" ]";
+					correctAnswers.innerHTML	=	sequenceString;
 
 					answersWrap.appendChild(correctAnswers);
 
@@ -123,28 +120,30 @@ questWrap.setAttribute("class","questWrap");
 					var dragCanvasWrap	=	document.createElement("DIV");
 					dragCanvasWrap.setAttribute("class","dragCanvasWrap");
 
-						var dragTable	=	document.createElement("TABLE");
+						var dragTable		=	document.createElement("TABLE");
 						dragTable.setAttribute("class","dragTable noselect");
 
-							var tbody	=	document.createElement("TBODY");
+							var tbody			=	document.createElement("TBODY");
 
-								var tr	=	document.createElement("TR");
+								var tr				=	document.createElement("TR");
 
-									var td	=	document.createElement("TD");
+									var td				=	document.createElement("TD");
 									td.setAttribute("class","answer-column");
 									td.setAttribute("style","padding-left:2%");
 
-										for(var j=0;j<question.answers.length;j++){
-											var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+										var shuffledAnswers	=	shuffleArray(JSON.parse(JSON.stringify(question.answers)));
+
+										for(var j=0;j<shuffledAnswers.length;j++){
+											var answer	=	JSON.parse(JSON.stringify(shuffledAnswers[j]));
 											if(answer.coordinates.position=="left"){
 												var	answerElem	=	document.createElement("DIV");
 												answerElem.setAttribute("class","answer");
 												answerElem.setAttribute("data-partnerId",Number(answer.partnerId));
 
 												if(answer.image!=""){
-													answerElem.innerHTML="<img src='"+answer.image+"'>";
+													answerElem.innerHTML	=	"<img src='"+answer.image+"'>";
 												}else{
-													answerElem.innerHTML=answer.text;
+													answerElem.innerHTML	=	answer.text;
 												}
 												td.appendChild(answerElem);
 											}
@@ -152,21 +151,21 @@ questWrap.setAttribute("class","questWrap");
 
 									tr.appendChild(td);
 
-									var td	=	document.createElement("TD");
+									var td				=	document.createElement("TD");
 									td.setAttribute("class","answer-column");
 									td.setAttribute("style","padding-right:2%");
 
-										for(var j=0;j<question.answers.length;j++){
-											var answer	=	JSON.parse(JSON.stringify(question.answers[j]));
+										for(var j=0;j<shuffledAnswers.length;j++){
+											var answer			=	JSON.parse(JSON.stringify(shuffledAnswers[j]));
 											if(answer.coordinates.position=="right"){
 												var	answerElem	=	document.createElement("DIV");
 												answerElem.setAttribute("class","answer");
 												answerElem.setAttribute("data-partnerId",Number(answer.partnerId));
 
 												if(answer.image!=""){
-													answerElem.innerHTML="<img src='"+answer.image+"'>";
+													answerElem.innerHTML	=	"<img src='"+answer.image+"'>";
 												}else{
-													answerElem.innerHTML=answer.text;
+													answerElem.innerHTML	=	answer.text;
 												}
 												td.appendChild(answerElem);
 											}
@@ -205,7 +204,7 @@ questWrap.setAttribute("class","questWrap");
 					var correctAnswers	=	document.createElement("DIV");
 					correctAnswers.setAttribute("class","correctAnswers");
 
-						var title	=	document.createElement("DIV");
+						var title		=	document.createElement("DIV");
 						title.setAttribute("style","text-align:center");
 						title.innerHTML	=	"Correct sequence:"
 						correctAnswers.appendChild(title);
@@ -213,32 +212,32 @@ questWrap.setAttribute("class","questWrap");
 						var correctTable	=	document.createElement("TABLE");
 						correctTable.setAttribute("class","correctTable");
 
-							var tbody	=	document.createElement("TBODY");
+							var tbody			=	document.createElement("TBODY");
 								for(var j=0;j<question.answers.length;j++){
 									var answer	=	question.answers[j];
 									if(answer.coordinates.position=="left"){
-										var tr	=	document.createElement("TR");
-											var td = document.createElement("TD");
+										var tr		=	document.createElement("TR");
+											var td		=	document.createElement("TD");
 												var answerElem	=	document.createElement("DIV");
 												answerElem.setAttribute("class","correctAnswer");
 												if(answer.image!=""){
-													answerElem.innerHTML="<img src='"+answer.image+"'>";
+													answerElem.innerHTML	=	"<img src='"+answer.image+"'>";
 												}else{
-													answerElem.innerHTML=answer.text;
+													answerElem.innerHTML	=	answer.text;
 												}
 												td.appendChild(answerElem);
 											tr.appendChild(td);
 
-											var td	=	document.createElement("TD");
+											var td		=	document.createElement("TD");
 												var answerElem	=	document.createElement("DIV");
 												answerElem.setAttribute("class","correctAnswer");
 												for(var k=0;k<question.answers.length;k++){
 													var partnerAnswer	=	question.answers[k];
 													if(partnerAnswer.partnerId==answer.partnerId){
 														if(partnerAnswer.image!=""){
-															answerElem.innerHTML="<img src='"+partnerAnswer.image+"'>";
+															answerElem.innerHTML	=	"<img src='"+partnerAnswer.image+"'>";
 														}else{
-															answerElem.innerHTML=partnerAnswer.text;
+															answerElem.innerHTML	=	partnerAnswer.text;
 														}
 														td.appendChild(answerElem);
 													}
@@ -296,18 +295,18 @@ questWrap.setAttribute("class","questWrap");
 							var answerWrap	=	document.createElement("DIV");
 							answerWrap.setAttribute("class","answerWrap")
 
-								var answerTitle	=	document.createElement("DIV");
+								var answerTitle				=	document.createElement("DIV");
 								answerTitle.setAttribute("class","answerTitle");
-								answerTitle.innerHTML	=	eval(i+1)+".";
+								answerTitle.innerHTML		=	eval(i+1)+".";
 								answerWrap.appendChild(answerTitle);
 
-								var answerTextarea	=	document.createElement("TEXTAREA");
+								var answerTextarea			=	document.createElement("TEXTAREA");
 								answerTextarea.setAttribute("class","answerTextarea");
 								answerWrap.appendChild(answerTextarea);
 
-								var correctAnswers	=	document.createElement("DIV");
+								var correctAnswers			=	document.createElement("DIV");
 								correctAnswers.setAttribute("class","correctAnswers");
-								correctAnswers.innerHTML=activePoint.correctText;
+								correctAnswers.innerHTML	=	activePoint.correctText;
 								answerWrap.appendChild(correctAnswers);
 
 							answers.appendChild(answerWrap);
@@ -329,9 +328,9 @@ questWrap.setAttribute("class","questWrap");
 
 					answersWrap.appendChild(answerWrap);
 
-					var correctAnswers	=	document.createElement("DIV");
+					var correctAnswers			=	document.createElement("DIV");
 					correctAnswers.setAttribute("class","correctAnswers");
-					correctAnswers.innerHTML=question.correctText;
+					correctAnswers.innerHTML	=	question.correctText;
 					answerWrap.appendChild(correctAnswers);
 
 					break;
@@ -346,7 +345,7 @@ questWrap.setAttribute("class","questWrap");
 		questionsWrap.appendChild(questionWrap);
 	}
 
-	var questResult	=	document.createElement("DIV");
+	var questResult		=	document.createElement("DIV");
 	questResult.setAttribute("id","result");
 	questionsWrap.appendChild(questResult);
 
@@ -355,22 +354,22 @@ questWrap.setAttribute("class","questWrap");
 	var questControls	=	document.createElement("DIV");
 	questControls.setAttribute("class","questControls");
 
-		var previousButton	=	document.createElement("DIV");
+		var previousButton			=	document.createElement("DIV");
 		previousButton.setAttribute("id","prev-button");
 		previousButton.setAttribute("class","button");
 		previousButton.setAttribute("onclick","navigate(-1)");
-		previousButton.innerHTML="Previous";
+		previousButton.innerHTML	=	"Previous";
 		questControls.appendChild(previousButton);
 
-		var number	=	document.createElement("DIV");
+		var number					=	document.createElement("DIV");
 		number.setAttribute("id","number");
 		questControls.appendChild(number);
 
-		var nextButton	=	document.createElement("DIV");
+		var nextButton				=	document.createElement("DIV");
 		nextButton.setAttribute("id","next-button");
 		nextButton.setAttribute("class","button");
 		nextButton.setAttribute("onclick","navigate(1)");
-		nextButton.innerHTML="Next";
+		nextButton.innerHTML		=	"Next";
 		questControls.appendChild(nextButton);
 	questWrap.appendChild(questControls);
 
@@ -379,11 +378,11 @@ elemToAdd.appendChild(questWrap);
 function navigate(num){
 	var questionToOpen	=	0;
 	document.getElementsByClassName("questWrap")[0].scrollTop = 0;
-	var questions	=	document.getElementsByClassName("questionWrap");
+	var questions		=	document.getElementsByClassName("questionWrap");
 	var totalQuestions	=	quest.questions.length;
 	for(var i=0;i<questions.length;i++){
 		if(questions[i].classList.contains("questionActive")){
-			questionToOpen=i+num;
+			questionToOpen	=	i+num;
 		}
 	}
 	
@@ -398,10 +397,10 @@ function navigate(num){
 		questions[0].classList.remove("questionHiddenRight");
 		document.getElementById("prev-button").classList.add("buttonInactive");
 		document.getElementById("next-button").classList.remove("buttonInactive");
-		document.getElementById("next-button").innerHTML="Next";
-		document.getElementById("prev-button").innerHTML="Previous";
-		document.getElementById("result").style.display="none";
-		document.getElementById("number").innerHTML="1/"+totalQuestions;
+		document.getElementById("next-button").innerHTML	=	"Next";
+		document.getElementById("prev-button").innerHTML	=	"Previous";
+		document.getElementById("result").style.display		=	"none";
+		document.getElementById("number").innerHTML			=	"1/"+totalQuestions;
 	}else if(questionToOpen==eval(questions.length-1)){
 		//Last question is going to open now
 		for(var i=0;i<questions.length;i++){
@@ -412,12 +411,12 @@ function navigate(num){
 		questions[questionToOpen].classList.add("questionActive");
 		questions[questionToOpen].classList.remove("questionHiddenLeft");
 		if(document.getElementsByClassName("questWrap")[0].classList.contains("finished")){
-			document.getElementById("next-button").innerHTML="Results";
+			document.getElementById("next-button").innerHTML	=	"Results";
 		}else{
-			document.getElementById("next-button").innerHTML="Finish Quest";
+			document.getElementById("next-button").innerHTML	=	"Finish Quest";
 		}
-		document.getElementById("result").style.display="none";
-		document.getElementById("number").innerHTML=eval(questionToOpen+1)+"/"+totalQuestions;
+		document.getElementById("result").style.display	=	"none";
+		document.getElementById("number").innerHTML		=	eval(questionToOpen+1)+"/"+totalQuestions;
 	}else if(questionToOpen>=questions.length){
 		//Quest has ended
 		for(var i=0;i<questions.length;i++){
@@ -425,12 +424,12 @@ function navigate(num){
 			questions[i].classList.remove("questionHiddenRight");
 			questions[i].classList.add("questionHiddenLeft");
 		}
-		document.getElementById("next-button").innerHTML="Quest ended";
+		document.getElementById("next-button").innerHTML	=	"Quest ended";
 		document.getElementById("next-button").classList.add("buttonInactive");
 		document.getElementById("prev-button").classList.remove("buttonInactive");
-		document.getElementById("prev-button").innerHTML="Review Answers";
-		document.getElementById("result").style.display="block";
-		document.getElementById("number").innerHTML="";
+		document.getElementById("prev-button").innerHTML	=	"Review Answers";
+		document.getElementById("result").style.display		=	"block";
+		document.getElementById("number").innerHTML			=	"";
 		finishQuest();
 	}else{
 		for(var i=0;i<questions.length;i++){
@@ -446,10 +445,10 @@ function navigate(num){
 		questions[questionToOpen].classList.add("questionActive");
 		document.getElementById("prev-button").classList.remove("buttonInactive");
 		document.getElementById("next-button").classList.remove("buttonInactive");
-		document.getElementById("next-button").innerHTML="Next";
-		document.getElementById("prev-button").innerHTML="Previous";
-		document.getElementById("result").style.display="none";
-		document.getElementById("number").innerHTML=eval(questionToOpen+1)+"/"+totalQuestions;
+		document.getElementById("next-button").innerHTML	=	"Next";
+		document.getElementById("prev-button").innerHTML	=	"Previous";
+		document.getElementById("result").style.display		=	"none";
+		document.getElementById("number").innerHTML			=	eval(questionToOpen+1)+"/"+totalQuestions;
 	}
 
 	if(document.getElementsByClassName("questionActive")[0]){
@@ -466,7 +465,7 @@ navigate(1);
 function pickAnswer(elem){
 	console.log(elem.parentElement.parentElement);
 	var question	=	elem.parentElement.parentElement;
-	var type	=	Number(question.dataset.type);
+	var type		=	Number(question.dataset.type);
 	switch (type){
 		case 1:
 			if(elem.classList.contains("answerSelected")){
@@ -483,13 +482,13 @@ function pickAnswerOnImage(event,elem){
 	var currentAnswers	=	elem.parentElement.getElementsByClassName("imageAnswer");
 	for(var i=0;i<currentAnswers.length;i++){
 		var currentAnswer	=	currentAnswers[i];
-		var elemRect	=	currentAnswer.getBoundingClientRect();
-		var boundingBox	=	elem;
-		var top			=	elemRect.top-boundingBox.getBoundingClientRect().top;//Because main image is not at the top of viewport
-		var bottom		=	top	+ elemRect.height;
+		var elemRect		=	currentAnswer.getBoundingClientRect();
+		var boundingBox		=	elem;
+		var top				=	elemRect.top-boundingBox.getBoundingClientRect().top;//Because main image is not at the top of viewport
+		var bottom			=	top	+ elemRect.height;
 		
-		var left	=	elemRect.left-boundingBox.getBoundingClientRect().left;
-		var right	=	left	+ elemRect.width;
+		var left			=	elemRect.left-boundingBox.getBoundingClientRect().left;
+		var right			=	left	+ elemRect.width;
 
 		if(event.offsetY<bottom && event.offsetY>top && event.offsetX>left && event.offsetX<right){
 			answerExists	=	true;
@@ -499,11 +498,11 @@ function pickAnswerOnImage(event,elem){
 	}
 
 	if(!answerExists){
-		var answer	=	document.createElement("DIV");
+		var answer					=	document.createElement("DIV");
 		answer.setAttribute("class","imageAnswer");
-		answer.style.top=eval(event.offsetY-13)+"px";
-		answer.style.left=eval(event.offsetX-13)+"px";
-		answer.dataset.coordinates=event.offsetX+","+event.offsetY;
+		answer.style.top			=	eval(event.offsetY-13)+"px";
+		answer.style.left			=	eval(event.offsetX-13)+"px";
+		answer.dataset.coordinates	=	event.offsetX+","+event.offsetY;
 		elem.parentElement.appendChild(answer);
 	}else{
 		elem.parentElement.removeChild(currentAnswers[answerIndex]);
@@ -539,72 +538,72 @@ function finishQuest(){
 		switch (Number(question.dataset.type)){
 			case 1:
 				//True-false
-				var answers	=	question.querySelectorAll(".answer");
-				var PickedCorrectAnswers=	0;
-				var TotalCorrectAnswers	=	0;
-				var PickedWrongAnswers	=	0;
+				var answers						=	question.querySelectorAll(".answer");
+				var PickedCorrectAnswers		=	0;
+				var TotalCorrectAnswers			=	0;
+				var PickedWrongAnswers			=	0;
 				for(var j=0;j<answers.length;j++){
-					answer	=	answers[j];
+					answer						=	answers[j];
 					if(answer.classList.contains("correct")){
-						TotalCorrectAnswers=TotalCorrectAnswers+1;
+						TotalCorrectAnswers		=	TotalCorrectAnswers+1;
 					}
 					if(answer.classList.contains("answerSelected") && answer.classList.contains("correct")){
 						PickedCorrectAnswers	=	PickedCorrectAnswers+1;
 					}
 					if(answer.classList.contains("answerSelected") && !answer.classList.contains("correct")){
-						PickedWrongAnswers	=	PickedWrongAnswers+1;
+						PickedWrongAnswers		=	PickedWrongAnswers+1;
 					}
 				}
-				var score	=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
+				var score						=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
 				scoreArray.push(score);
 				break;
 			case 2:
 				//True-false image
-				var answers	=	question.querySelectorAll(".answer");
-				var PickedCorrectAnswers=	0;
-				var TotalCorrectAnswers	=	0;
-				var PickedWrongAnswers	=	0;
+				var answers						=	question.querySelectorAll(".answer");
+				var PickedCorrectAnswers		=	0;
+				var TotalCorrectAnswers			=	0;
+				var PickedWrongAnswers			=	0;
 				for(var j=0;j<answers.length;j++){
-					answer	=	answers[j];
+					answer						=	answers[j];
 					if(answer.classList.contains("correct")){
-						TotalCorrectAnswers=TotalCorrectAnswers+1;
+						TotalCorrectAnswers		=	TotalCorrectAnswers+1;
 					}
 				}
-				var pickedAnswers	=	question.getElementsByClassName("imageAnswer");
+				var pickedAnswers				=	question.getElementsByClassName("imageAnswer");
 				for(var j=0;j<pickedAnswers.length;j++){
-					var pickedAnswer	=	pickedAnswers[j];
-					var x	=	Number(pickedAnswer.dataset.coordinates.split(",")[0]);
-					var y	=	Number(pickedAnswer.dataset.coordinates.split(",")[1]);
-					var answerCorrect	=	false;
+					var pickedAnswer			=	pickedAnswers[j];
+					var x						=	Number(pickedAnswer.dataset.coordinates.split(",")[0]);
+					var y						=	Number(pickedAnswer.dataset.coordinates.split(",")[1]);
+					var answerCorrect			=	false;
 					for(var k=0;k<answers.length;k++){
 						//Check if x and y are inside element (boundingBox is the large box which contains main image)
-						var elemRect	=	answers[k].getBoundingClientRect();
-						var top			=	elemRect.top-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().top;//Because main image is not at the top of viewport
-						var bottom		=	top	+ elemRect.height;
+						var elemRect			=	answers[k].getBoundingClientRect();
+						var top					=	elemRect.top-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().top;//Because main image is not at the top of viewport
+						var bottom				=	top	+ elemRect.height;
 						
-						var left	=	elemRect.left-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().left;
-						var right	=	left	+ elemRect.width;
+						var left				=	elemRect.left-question.getElementsByClassName("imageOverlay")[0].getBoundingClientRect().left;
+						var right				=	left	+ elemRect.width;
 						
 						if(y<bottom && y>top && x>left && x<right){
-							answerCorrect	=	true;
+							answerCorrect		=	true;
 							break;
 						}
 					}
 					if(answerCorrect){
 						PickedCorrectAnswers	=	PickedCorrectAnswers+1;
 					}else{
-						PickedWrongAnswers	=	PickedWrongAnswers+1;
+						PickedWrongAnswers		=	PickedWrongAnswers+1;
 					}
 				}
-				var score	=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
+				var score						=	Math.max(0,(PickedCorrectAnswers-PickedWrongAnswers*0.5)/TotalCorrectAnswers*Number(question.dataset.scoreimpact));
 				scoreArray.push(score);
 				break;
 			case 3:
 				//Reorder actions
-				var correctOrder	=	true;
+				var correctOrder				=	true;
 				for(var j=0;j<question.getElementsByClassName("answer").length;j++){
 					if(eval(j+1)!=Number(question.getElementsByClassName("answer")[j].dataset.order)){
-						correctOrder	=	false;
+						correctOrder			=	false;
 					}
 				}
 				if(correctOrder){
@@ -615,12 +614,12 @@ function finishQuest(){
 				break;
 			case 4:
 				//connect the dots
-				var PickedCorrectAnswers=	0;
-				var TotalCorrectAnswers	=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer").length;
-				var PickedWrongAnswers	=	0;
+				var PickedCorrectAnswers	=	0;
+				var TotalCorrectAnswers		=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer").length;
+				var PickedWrongAnswers		=	0;
 
 				for(var j=0;j<TotalCorrectAnswers;j++){
-					var answer	=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer")[j];
+					var answer			=	question.getElementsByClassName("answer-column")[0].getElementsByClassName("answer")[j];
 					var answerCorrect	=	false;
 					for(var k=0;k<TotalCorrectAnswers;k++){
 						if(answer.dataset.answerindex){
@@ -629,7 +628,7 @@ function finishQuest(){
 								if(answer.dataset.partnerid==question.getElementsByClassName("answer-column")[1].getElementsByClassName("answer")[k].dataset.partnerid){
 									PickedCorrectAnswers	=	PickedCorrectAnswers+1;
 								}else{
-									PickedWrongAnswers	=	PickedWrongAnswers+1;
+									PickedWrongAnswers		=	PickedWrongAnswers+1;
 								}
 								break;
 							}
@@ -656,8 +655,8 @@ function finishQuest(){
 		}
 		
 	}
-	var totalScore	=	0;
-	var reviews	=	0;
+	var totalScore		=	0;
+	var reviews			=	0;
 	for(var i=0;i<scoreArray.length;i++){
 		if(scoreArray[i]!="review"){
 			totalScore	=	eval(totalScore + scoreArray[i]);
@@ -668,12 +667,12 @@ function finishQuest(){
 
 	var totalScoreDisp	=	(totalScore.toString().split(".")[1]) ? totalScore.toFixed(2) : totalScore;
 
-	document.getElementById("result").innerHTML	=	"You scored <span>" + totalScoreDisp + "</span> out of <span>100</span><br>&nbsp;<br>";
+	document.getElementById("result").innerHTML			=	"You scored <span>" + totalScoreDisp + "</span> out of <span>100</span><br>&nbsp;<br>";
 	if(reviews>0){
 		if(reviews==1){
-			document.getElementById("result").innerHTML += reviews + " question is waiting for review";	
+			document.getElementById("result").innerHTML	+=	reviews + " question is waiting for review";	
 		}else{
-			document.getElementById("result").innerHTML += reviews + " questions are waiting for reviews";	
+			document.getElementById("result").innerHTML +=	reviews + " questions are waiting for reviews";	
 		}
 	}
 }

@@ -322,8 +322,8 @@ function submitQuest(){
 				questionJson.activePoints	=	[];
 				questionJson.answers		=	[];
 				var answers					=	question.getElementsByClassName("imageWrap")[0].getElementsByClassName("imageAnswer");
-				var totalWidth				=	document.getElementById("questions-wrap").offsetWidth;
-				var totalHeight				=	document.getElementById("questions-wrap").offsetWidth;
+				var totalWidth				=	question.getElementsByClassName("imageWrap")[0].offsetWidth;
+				var totalHeight				=	question.getElementsByClassName("imageWrap")[0].offsetHeight;
 				for(var j=0;j<answers.length;j++){
 					var answerJson				=	{};
 					var answer					=	answers[j];
@@ -334,7 +334,7 @@ function submitQuest(){
 					answerJson.coordinates.y	=	Number(answer.style.top.substring(0,answer.style.top.length-2))/totalHeight*100;
 					answerJson.size				=	{};
 					answerJson.size.width		=	Number(answer.offsetWidth/totalWidth*100);
-					answerJson.size.height		=	Number(answer.offsetWidth/totalHeight*100);
+					answerJson.size.height		=	Number(answer.offsetHeight/totalHeight*100);
 					answerJson.order			=	"";
 					answerJson.partnerId		=	"";
 					answerJson.image			=	"";
@@ -405,8 +405,8 @@ function submitQuest(){
 				questionJson.activePoints	=	[];
 				questionJson.answers		=	[];
 				var activePoints			=	question.getElementsByClassName("imageWrap")[1].getElementsByClassName("imageAnswer");
-				var totalWidth				=	document.getElementById("questions-wrap").offsetWidth;
-				var totalHeight				=	document.getElementById("questions-wrap").offsetWidth;
+				var totalWidth				=	question.getElementsByClassName("imageWrap")[1].offsetWidth;
+				var totalHeight				=	question.getElementsByClassName("imageWrap")[1].offsetHeight;
 				for(var j=0;j<activePoints.length;j++){
 					var activePointJson				=	{};
 					var activePoint					=	activePoints[j];
