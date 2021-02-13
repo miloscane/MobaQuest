@@ -147,98 +147,164 @@ server.post('/newQuest', (req, res) => {
 			}
 		}
 		questJson.filename	=	new Date().getTime();
-		fs.writeFileSync("./quests/"+questJson.filename+".json",JSON.stringify(questJson,null,"\t"));
-        res.redirect('/questAdded/'+questJson.filename);
+		questJson.filetype	=	"quest";
+		//fs.writeFileSync("./quests/"+questJson.filename+".json",JSON.stringify(questJson,null,"\t"));
+		mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+			if(err){
+				console.log(err)
+			}else{
+				var collection	=	client.db('MobaQuest').collection('Quests');
+				collection.insertOne(questJson,function(err,data){
+					if(err){
+						console.log(err);
+						res.render('message',{
+							pageInfo: fetchPageInfo('message',''),
+							message: "There was an error while adding the quest. Please try to refresh this page to retry adding the quest."
+						});
+					}else{
+        				//res.redirect('/questAdded/'+questJson.filename);
+        				res.render('message',{
+							pageInfo: fetchPageInfo('message',''),
+							message: "<div>Quest \""+questJson.name+"\" has been successfully added.</div><div class='linkWrap'><a href='/quest/"+questJson.filename+"'>View Quest</a></div>"
+						});
+						client.close()
+					}
+				})
+			}
+		});
+		
     });
 });
 
-server.get('/questAdded/:questFilename',function(req,res){
-	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
-		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
-		res.render('message',{
-			pageInfo: fetchPageInfo('message',''),
-			message: "<div>Quest \""+questJson.name+"\" has been successfully added.</div><div class='linkWrap'><a href='/quest/"+questJson.filename+"'>View Quest</a></div>"
-		});
-	}else{
-		res.render('message',{
-			pageInfo: fetchPageInfo('message',''),
-			message: "No no :)"
-		});
-	}
-});
-
 server.get('/deleteQuest/:questFilename',function(req,res){
-	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
-		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
-		var filesToDelete	=	[];
-		for(var i=0;i<questJson.questions.length;i++){
-			if(questJson.questions[i].image!=""){
-				filesToDelete.push("./public"+questJson.questions[i].image);
-			}
+	mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+		if(err){
+			console.log(err)
+		}else{
+			var collection	=	client.db('MobaQuest').collection('Quests');
+			collection.find({filename:Number(req.params.questFilename)}).toArray(function(err,result){
+				if(err){
+					console.log(err)
+				}else{
+					if(result.length>0){
+						var questJson	=	result[0];
+						var collection2	=	client.db('MobaQuest').collection('Quests');
+						collection2.deleteOne({filename:Number(req.params.questFilename)},function(err,data){
+							if(err){
+								console.log(err);
+								res.render('message',{
+									pageInfo: fetchPageInfo('message',''),
+									message: "Failed to delete quest.<br>"+err.toString()
+								});
+							}else{
+								var filesToDelete	=	[];
+								for(var i=0;i<questJson.questions.length;i++){
+									if(questJson.questions[i].image!=""){
+										filesToDelete.push("./public"+questJson.questions[i].image);
+									}
+								}
+								for(var i=0;i<filesToDelete.length;i++){
+									if(fs.existsSync(filesToDelete[i])){
+										fs.unlinkSync(filesToDelete[i].toString());
+									}
+								}
+								res.render('message',{
+									pageInfo: fetchPageInfo('message',''),
+									message: "<div>Quest successfully deleted.</div><div class='linkWrap'><a href='/allQuests'>All Quests</a></div>"
+								});
+								client.close();
+							}
+						});
+					}else{
+						res.render('message',{
+							pageInfo: 	fetchPageInfo('message',''),
+							message: 	"No such quest. Nothign deleted"
+						});
+					}
+				}
+			});
+			
 		}
-		for(var i=0;i<filesToDelete.length;i++){
-			if(fs.existsSync(filesToDelete[i])){
-				fs.unlinkSync(filesToDelete[i].toString());
-			}
-		}
-		fs.unlinkSync('./quests/'+req.params.questFilename+'.json');
-		res.render('message',{
-			pageInfo: fetchPageInfo('message',''),
-			message: "<div>Quest successfully deleted.</div><div class='linkWrap'><a href='/allQuests'>All Quests</a></div>"
-		});
-	}else{
-		res.render('message',{
-			pageInfo: fetchPageInfo('message',''),
-			message: "No no :)"
-		});
-	}
+	});
 });
 
 server.get('/allQuests',function(req,res){
-	var questFiles	=	fs.readdirSync('./quests');
-	var quests	=	[];
-	for(var i=0;i<questFiles.length;i++){
-		if(questFiles[i].split(".")[1]=="json"){
-			var questJson	=	JSON.parse(fs.readFileSync('./quests/'+questFiles[i]));
-			quests.push({"filename":questJson.filename,"name":questJson.name});
+	mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+		if(err){
+			console.log(err)
+		}else{
+			var collection	=	client.db('MobaQuest').collection('Quests');
+			collection.find({filetype:"quest"}).toArray(function(err,result){
+				if(err){
+					console.log(err)
+				}else{
+					var quests	=	JSON.parse(JSON.stringify(result));
+					res.render('allQuests',{
+						pageInfo: fetchPageInfo('allQuests',''),
+						quests: quests
+					});
+					client.close();
+				}
+			});
 		}
-	}
-
-	res.render('allQuests',{
-		pageInfo: fetchPageInfo('allQuests',''),
-		quests: quests
 	});
 });
 
 server.get('/quest/:questFilename',function(req,res){
-	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
-		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
-		res.render('questViewer',{
-			pageInfo: 	fetchPageInfo('questViewer',''),
-			quest: 		questJson
-		});
-	}else{
-		res.render('message',{
-			pageInfo: 	fetchPageInfo('message',''),
-			message: 	"No no :)"
-		});
-	}
+	mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+		if(err){
+			console.log(err)
+		}else{
+			var collection	=	client.db('MobaQuest').collection('Quests');
+			collection.find({filename:Number(req.params.questFilename)}).toArray(function(err,result){
+				if(err){
+					console.log(err)
+				}else{
+					if(result.length>0){
+						res.render('questViewer',{
+							pageInfo: 	fetchPageInfo('questViewer',''),
+							quest: 		result[0]
+						});
+					}else{
+						res.render('message',{
+							pageInfo: 	fetchPageInfo('message',''),
+							message: 	"No no :)"
+						});
+					}
+					client.close();
+				}
+			});
+		}
+	});
 });
 
 
 server.get('/questEditor/:questFilename',function(req,res){
-	if(fs.existsSync('./quests/'+req.params.questFilename+'.json')){
-		var questJson	=	JSON.parse(fs.readFileSync('./quests/'+req.params.questFilename+'.json'));
-		res.render('questEditor',{
-			pageInfo: 	fetchPageInfo('questEditor',''),
-			quest: 		questJson
-		});
-	}else{
-		res.render('message',{
-			pageInfo: 	fetchPageInfo('message',''),
-			message: 	"No no :)"
-		});
-	}
+	mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+		if(err){
+			console.log(err)
+		}else{
+			var collection	=	client.db('MobaQuest').collection('Quests');
+			collection.find({filename:Number(req.params.questFilename)}).toArray(function(err,result){
+				if(err){
+					console.log(err)
+				}else{
+					if(result.length>0){
+						res.render('questEditor',{
+							pageInfo: 	fetchPageInfo('questEditor',''),
+							quest: 		result[0]
+						});
+					}else{
+						res.render('message',{
+							pageInfo: 	fetchPageInfo('message',''),
+							message: 	"No no :)"
+						});
+					}
+					client.close();
+				}
+			});
+		}
+	});
 });
 
 server.get('/:pageName',function(req,res){

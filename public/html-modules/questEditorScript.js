@@ -279,10 +279,10 @@ function submitQuest(){
 	
 	for(var i=0;i<questions.length;i++){
 		var question			=	questions[i];//Hide all questions first
-		/*for(var j=0;j<questions.length;j++){
+		for(var j=0;j<questions.length;j++){
 			questions[j].style.display	=	"none";
 		}
-		question.style.display	=	"block";//You need to display images to extract widths and heights*/
+		question.style.display	=	"block";//You need to display images to extract widths and heights
 		var questionType		=	-1;
 		var buttons				=	question.getElementsByClassName("questionTypeButtonsWrap")[0].getElementsByClassName("button");
 		for(var j=0;j<buttons.length;j++){
