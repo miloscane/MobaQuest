@@ -279,7 +279,7 @@ questWrap.setAttribute("class","questWrap");
 							activeElem.style.width	=	activePoint.size.width+"%";
 							activeElem.style.height	=	activePoint.size.height+"%";
 							activeElem.setAttribute("onclick","focusAnswer(this)");
-							activeElem.innerHTML	=	eval(i+1)+".";
+							activeElem.innerHTML	=	eval(j+1)+".";
 
 							imageWrap.appendChild(activeElem);
 						}
@@ -297,7 +297,7 @@ questWrap.setAttribute("class","questWrap");
 
 								var answerTitle				=	document.createElement("DIV");
 								answerTitle.setAttribute("class","answerTitle");
-								answerTitle.innerHTML		=	eval(i+1)+".";
+								answerTitle.innerHTML		=	eval(j+1)+".";
 								answerWrap.appendChild(answerTitle);
 
 								var answerTextarea			=	document.createElement("TEXTAREA");
